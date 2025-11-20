@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Compteur GitHub Pages</title>
+</head>
+<body>
+
+<h1>Compteur simple</h1>
+<p id="count">0</p>
+<button onclick="increment()">+1</button>
+
+<script>
+let count = 0;
+
+function increment() {
+  count++;
+  document.getElementById("count").textContent = count;
+}
+</script>
+
+</body>
+</html>
