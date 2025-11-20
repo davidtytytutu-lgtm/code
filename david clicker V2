@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mini-Clicker HTML</title>
+<style>
+  body { text-align: center; font-family: Arial, sans-serif; background: #f0f0f0; }
+  #score { font-size: 36px; margin: 20px; }
+  #player {
+    width: 100px; height: 100px; background: red;
+    margin: 20px auto; cursor: pointer; border-radius: 10px;
+    transition: transform 0.1s;
+  }
+  #player:hover { transform: scale(1.1); }
+  button { font-size: 20px; padding: 8px 16px; margin: 5px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>Mini-Clicker HTML</h1>
+<div id="score">Score : 0</div>
+<div id="player"></div>
+<button id="upgradeBtn">Upgrade (+1 point/clic) - 10 points</button>
+
+<script>
+let score = parseInt(localStorage.getItem('score')) || 0;
+let pointsPerClick = parseInt(localStorage.getItem('pointsPerClick')) || 1;
+
+const scoreDisplay = document.getElementById('score');
+const player = document.getElementById('player');
+const upgradeBtn = document.getElementById('upgradeBtn');
+
+function updateScore() {
+  scoreDisplay.textContent = 'Score : ' + score;
+}
+
+// Clique sur le “personnage”
+player.addEventListener('click', () => {
+  score += pointsPerClick;
+  localStorage.setItem('score', score);
+  updateScore();
+  // effet visuel : changer couleur au hasard
+  player.style.background = '#' + Math.floor(Math.random()*16777215).toString(16);
+});
+
+// Upgrade
+upgradeBtn.addEventListener('click', () => {
+  if(score >= 10) {
+    score -= 10;
+    pointsPerClick += 1;
+    localStorage.setItem('score', score);
+    localStorage.setItem('pointsPerClick', pointsPerClick);
+    updateScore();
+    alert('Upgrade acheté ! Tu gagnes maintenant ' + pointsPerClick + ' points par clic.');
+  } else {
+    alert('Pas assez de points pour l’upgrade !');
+  }
+});
+
+updateScore();
+</script>
+
+</body>
+</html>
