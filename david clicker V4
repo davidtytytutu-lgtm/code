@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>David Clicker V3</title>
+<style>
+  body { text-align: center; font-family: Arial, sans-serif; background: #f0f0f0; }
+  h1 { margin-top: 20px; }
+  #score { font-size: 36px; margin: 20px; }
+  #player-container {
+    display: inline-block;
+    border: 3px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    user-select: none; /* empêche la sélection */
+  }
+  #player {
+    font-size: 80px;
+    cursor: pointer;
+    transition: transform 0.1s;
+    user-select: none;
+    display: inline-block;
+  }
+  #player:hover { transform: scale(1.2); }
+  button { font-size: 18px; padding: 8px 16px; margin: 5px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>David Clicker V3</h1>
+<div id="score">Score : 0</div>
+
+<div id="player-container">
+  <div id="player">❤️</div>
+</div>
+
+<div>
+  <button id="upgradeBtn">Upgrade (+1 point/clic) - 10 points</button>
+  <button id="autoClickBtn">Auto-Clicker (+1 point/s) - 50 points</button>
+  <button id="doubleBtn">Double Points 10s - 30 points</button>
+</div>
+
+<script>
+let score = parseInt(localStorage.getItem('score')) || 0;
+let pointsPerClick = parseInt(localStorage.getItem('pointsPerClick')) || 1;
+let autoClickers = parseInt(localStorage.getItem('autoClickers')) || 0;
+let doubleActive = false;
+
+const scoreDisplay = document.getElementById('score');
+const player = document.getElementById('player');
+const upgradeBtn = document.getElementById('upgradeBtn');
+const autoClickBtn = document.getElementById('autoClickBtn');
+const doubleBtn = document.getElementById('doubleBtn');
+
+const hearts = ['❤️','💛','💚','💙','💜','🖤','🧡','🤍','🤎'];
+
+function updateScore() {
+  scoreDisplay.textContent = 'Score : ' + score;
+}
+
+// Clique sur l'émoji cœur
+player.addEventListener('click', () => {
+  let gain = doubleActive ? pointsPerClick * 2 : pointsPerClick;
+  score += gain;
+  localStorage.setItem('score', score);
+  updateScore();
+
+  // changer couleur / émoji cœur aléatoire
+  player.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+});
+
+// Upgrade
+upgradeBtn.addEventListener('click', () => {
+  if(score >= 10) {
+    score -= 10;
+    pointsPerClick += 1;
+    localStorage.setItem('score', score);
+    localStorage.setItem('pointsPerClick', pointsPerClick);
+    updateScore();
+    alert('Upgrade acheté ! Tu gagnes maintenant ' + pointsPerClick + ' points par clic.');
+  } else {
+    alert('Pas assez de points pour l’upgrade !');
+  }
+});
+
+// Auto-Clicker
+autoClickBtn.addEventListener('click', () => {
+  if(score >= 50) {
+    score -= 50;
+    autoClickers += 1;
+    localStorage.setItem('score', score);
+    localStorage.setItem('autoClickers', autoClickers);
+    updateScore();
+    alert('Auto-Clicker acheté ! +' + autoClickers + ' point/s');
+  } else {
+    alert('Pas assez de points pour l’auto-clicker !');
+  }
+});
+
+// Double points temporaire
+doubleBtn.addEventListener('click', () => {
+  if(score >= 30 && !doubleActive) {
+    score -= 30;
+    localStorage.setItem('score', score);
+    doubleActive = true;
+    updateScore();
+    alert('Double points activé pendant 10 secondes !');
+    setTimeout(() => { doubleActive = false; alert('Double points terminé.'); }, 10000);
+  } else if(doubleActive) {
+    alert('Double points déjà actif !');
+  } else {
+    alert('Pas assez de points pour double points !');
+  }
+});
+
+// Boucle auto-clicker
+setInterval(() => {
+  if(autoClickers > 0) {
+    score += autoClickers;
+    localStorage.setItem('score', score);
+    updateScore();
+  }
+}, 1000);
+
+// initialisation
+updateScore();
+</script>
+
+</body>
+</html>
