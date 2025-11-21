@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>David Coin 🪙 Simulator V3</title>
+<style>
+body { font-family: Arial, sans-serif; text-align: center; background: #121212; color: #fff; }
+h1 { margin-top: 20px; }
+#dashboard { display: flex; justify-content: center; gap: 30px; margin-top: 20px; }
+#coin-panel, #info-panel {
+  background: #1e1e1e; padding: 20px; border-radius: 10px; min-width: 300px;
+}
+#value { font-size: 48px; margin: 20px 0; display: flex; align-items: center; justify-content: center; }
+#value span { margin-left: 10px; }
+button { font-size: 24px; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px; border: none; color: #fff; transition: 0.2s; }
+button:active { transform: scale(0.95); }
+#plus { background: #4caf50; }
+#minus { background: #f44336; }
+#withdraw { background: #2196f3; }
+#stats, #history, #advice { margin-top: 15px; font-size: 16px; text-align: left; max-height: 150px; overflow-y: auto; }
+.arrow { font-size: 48px; margin-left: 10px; transition: transform 0.3s; }
+.green { color: #4caf50; }
+.red { color: #f44336; }
+</style>
+</head>
+<body>
+
+<h1>David Coin 🪙 Simulator V3</h1>
+
+<div id="dashboard">
+  <div id="coin-panel">
+    <div id="value">Valeur: <span id="cryptoValue">100</span> 🪙 <span id="arrow" class="arrow">➖</span></div>
+    <div>
+      <button id="plus">➕</button>
+      <button id="minus">➖</button>
+      <button id="withdraw">💰 Retirer</button>
+    </div>
+    <div id="stats">
+      <p>Balance : <span id="balance">0</span> 🪙</p>
+    </div>
+    <div id="history"><p>Historique :</p></div>
+  </div>
+  
+  <div id="info-panel">
+    <p id="advice">Conseils : Soyez prêt !</p>
+  </div>
+</div>
+
+<script>
+// Variables locales
+let cryptoValue = parseFloat(localStorage.getItem('cryptoValue')) || 100;
+let balance = parseFloat(localStorage.getItem('balance')) || 0;
+let plusCount = parseInt(localStorage.getItem('plusCount')) || 0;
+let minusCount = parseInt(localStorage.getItem('minusCount')) || 0;
+let historyEntries = JSON.parse(localStorage.getItem('historyEntries')) || [];
+
+const cryptoValueDisplay = document.getElementById('cryptoValue');
+const balanceDisplay = document.getElementById('balance');
+const arrow = document.getElementById('arrow');
+const historyDiv = document.getElementById('history');
+const advice = document.getElementById('advice');
+
+function updateDisplay(change=0) {
+  cryptoValueDisplay.textContent = cryptoValue.toFixed(2);
+  balanceDisplay.textContent = balance.toFixed(2);
+
+  // flèche
+  if(change > 0){
+    arrow.textContent = '⬆️';
+    arrow.classList.add('green'); arrow.classList.remove('red');
+    advice.textContent = 'David Coin monte ! Peut-être acheter maintenant.';
+  } else if(change < 0){
+    arrow.textContent = '⬇️';
+    arrow.classList.add('red'); arrow.classList.remove('green');
+    advice.textContent = 'David Coin descend ! Prudence, vendre ?';
+  } else {
+    arrow.textContent = '➖';
+    arrow.classList.remove('green','red');
+    advice.textContent = 'David Coin stable.';
+  }
+}
+
+// Historique
+function addHistory(action, change){
+  const color = change >= 0 ? 'green' : 'red';
+  const entryText = `${action}: <span style="color:${color}">${change.toFixed(2)}</span> → Valeur: ${cryptoValue.toFixed(2)} 🪙`;
+  historyEntries.unshift(entryText);
+  if(historyEntries.length>50) historyEntries.pop();
+  localStorage.setItem('historyEntries', JSON.stringify(historyEntries));
+  renderHistory();
+}
+function renderHistory(){ historyDiv.innerHTML='<p>Historique :</p>'+historyEntries.join('<br>');}
+
+// changement aléatoire
+function randomChange(base=5){ return (Math.random()*base).toFixed(2)*1; }
+
+// Boutons
+document.getElementById('plus').addEventListener('click', ()=>{
+  const change = randomChange();
+  cryptoValue += change;
+  plusCount++; localStorage.setItem('plusCount', plusCount);
+  localStorage.setItem('cryptoValue', cryptoValue);
+  addHistory('➕ Augmenté', change);
+  updateDisplay(change);
+});
+
+document.getElementById('minus').addEventListener('click', ()=>{
+  const change = randomChange();
+  cryptoValue -= change;
+  if(cryptoValue<0) cryptoValue=0;
+  minusCount++; localStorage.setItem('minusCount', minusCount);
+  localStorage.setItem('cryptoValue', cryptoValue);
+  addHistory('➖ Diminué', -change);
+  updateDisplay(-change);
+});
+
+document.getElementById('withdraw').addEventListener('click', ()=>{
+  balance += cryptoValue;
+  cryptoValue = 100;
+  localStorage.setItem('balance', balance);
+  localStorage.setItem('cryptoValue', cryptoValue);
+  addHistory('💰 Retiré', 0);
+  updateDisplay(0);
+});
+
+// initialisation
+updateDisplay(0);
+balanceDisplay.textContent = balance.toFixed(2);
+renderHistory();
+</script>
+
+</body>
+</html>
