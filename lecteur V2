@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Lecteur avec Ajout Automatique</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; }
+    button { font-size: 20px; margin: 5px; cursor: pointer; }
+    input { width: 300px; padding: 5px; margin-top: 10px; }
+    .playlist-item {
+      margin: 4px;
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>David lecteur V2</h2>
+
+  <div id="player"></div>
+
+  <div style="margin-top: 15px;">
+    <button onclick="previous()">⬅️</button>
+    <button onclick="player.playVideo()">▶️</button>
+    <button onclick="player.pauseVideo()">⏸️</button>
+    <button onclick="next()">➡️</button>
+    <button onclick="shuffle()">🔀</button>
+  </div>
+
+  <h3>Ajouter une musique 🎵</h3>
+  <input id="ytInput" type="text" placeholder="Colle un lien YouTube ici">
+  <button onclick="addMusic()">Ajouter ➕</button>
+
+  <h3>Playlist actuelle</h3>
+  <div id="playlistDisplay"></div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    let playlist = [];
+    let index = 0;
+    let player;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("player", {
+        width: "350",
+        height: "250",
+        videoId: "",
+        events: {
+          onEnded: next
+        }
+      });
+    }
+
+    function extractID(url) {
+      const regex = /(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = url.match(regex);
+      return match ? match[1] : null;
+    }
+
+    function updatePlaylistDisplay() {
+      const div = document.getElementById("playlistDisplay");
+      div.innerHTML = "";
+      playlist.forEach((id, i) => {
+        div.innerHTML += `<div class="playlist-item">#${i+1} — ${id}</div>`;
+      });
+    }
+
+    function addMusic() {
+      const input = document.getElementById("ytInput").value;
+      const id = extractID(input);
+
+      if (!id) {
+        alert("Lien YouTube invalide !");
+        return;
+      }
+
+      playlist.push(id);
+      updatePlaylistDisplay();
+
+      if (playlist.length === 1) {
+        player.loadVideoById(id);
+      }
+
+      document.getElementById("ytInput").value = "";
+    }
+
+    function next() {
+      if (playlist.length === 0) return;
+      index = (index + 1) % playlist.length;
+      player.loadVideoById(playlist[index]);
+    }
+
+    function previous() {
+      if (playlist.length === 0) return;
+      index = (index - 1 + playlist.length) % playlist.length;
+      player.loadVideoById(playlist[index]);
+    }
+
+    function shuffle() {
+      if (playlist.length === 0) return;
+      index = Math.floor(Math.random() * playlist.length);
+      player.loadVideoById(playlist[index]);
+    }
+  </script>
+
+</body>
+</html>
