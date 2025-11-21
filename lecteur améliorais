@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Lecteur auto-mise à jour</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; }
+    button { font-size: 20px; margin: 5px; cursor: pointer; }
+    .playlist-item {
+      margin: 4px;
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Lecteur YouTube – Playlist Auto</h2>
+
+  <p>Nouvelle playlist générée tous les 3 jours (5 musiques).</p>
+
+  <div id="player"></div>
+
+  <div style="margin-top: 15px;">
+    <button onclick="previous()">⬅️</button>
+    <button onclick="player.playVideo()">▶️</button>
+    <button onclick="player.pauseVideo()">⏸️</button>
+    <button onclick="next()">➡️</button>
+    <button onclick="shuffle()">🔀</button>
+  </div>
+
+  <h3>Playlist actuelle</h3>
+  <div id="playlistDisplay"></div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    let playlist = [];
+    let index = 0;
+    let player;
+
+    // ===========================
+    //  LISTE DES MUSIQUES POSSIBLES
+    // ===========================
+    const musicPool = [
+      "0W0GwQfEu_s",  // lofi
+      "I1sIXtaLoT0",  // Fallen Down
+      "v23GA_5xYNU",  // 7 weeks & 3 days
+      "jfKfPfyJRdk",  // Lofi Girl
+      "DWcJFNfaw9c",  // Chillhop
+      "hHW1oY26kxQ",  // Relax study
+      "5qap5aO4i9A",  // Lofi stream
+      "kXYiU_JCYtU",  // Linkin park (exemple mix)
+      "dQw4w9WgXcQ",  // meme test
+      "6Dh-RL__uN4"   // dreamy synthwave
+    ];
+
+    // ===================================
+    //      MISE À JOUR AUTOMATIQUE
+    // ===================================
+    function generateNewPlaylist() {
+      playlist = [];
+      for (let i = 0; i < 5; i++) {
+        const random = Math.floor(Math.random() * musicPool.length);
+        playlist.push(musicPool[random]);
+      }
+      localStorage.setItem("playlist", JSON.stringify(playlist));
+      localStorage.setItem("lastUpdate", Date.now().toString());
+    }
+
+    function checkAutoUpdate() {
+      const last = localStorage.getItem("lastUpdate");
+      const savedList = localStorage.getItem("playlist");
+
+      if (!last || !savedList) {
+        generateNewPlaylist();
+        return;
+      }
+
+      const daysPassed = (Date.now() - parseInt(last)) / (1000 * 60 * 60 * 24);
+
+      if (daysPassed >= 3) {
+        generateNewPlaylist();
+      } else {
+        playlist = JSON.parse(savedList);
+      }
+    }
+
+    checkAutoUpdate();
+
+    // ===========================
+    //      AFFICHAGE PLAYLIST
+    // ===========================
+    function updatePlaylistDisplay() {
+      const div = document.getElementById("playlistDisplay");
+      div.innerHTML = "";
+      playlist.forEach((id, i) => {
+        div.innerHTML += `<div class="playlist-item">#${i+1} — ${id}</div>`;
+      });
+    }
+
+    updatePlaylistDisplay();
+
+    // ===========================
+    //      YOUTUBE PLAYER
+    // ===========================
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("player", {
+        width: "350",
+        height: "250",
+        videoId: playlist[0],
+        events: { onStateChange: autoNext }
+      });
+    }
+
+    function autoNext(e) {
+      if (e.data === YT.PlayerState.ENDED) next();
+    }
+
+    function next() {
+      index = (index + 1) % playlist.length;
+      player.loadVideoById(playlist[index]);
+    }
+
+    function previous() {
+      index = (index - 1 + playlist.length) % playlist.length;
+      player.loadVideoById(playlist[index]);
+    }
+
+    function shuffle() {
+      index = Math.floor(Math.random() * playlist.length);
+      player.loadVideoById(playlist[index]);
+    }
+  </script>
+
+</body>
+</html>
