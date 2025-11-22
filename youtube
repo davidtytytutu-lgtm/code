@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+	<html>
+	
+	<head>
+	  <meta charset="UTF-8">
+	  <link rel="stylesheet" href="style/main.css">
+	  <link rel="stylesheet" href="style/lightTheme.css">
+	  <link rel="stylesheet" href="style/player.css">
+	  <link rel="stylesheet" href="style/videoList.css">
+	  <link rel="stylesheet" href="style/channel.css">
+	  <link rel="stylesheet" href="style/loading.css">
+	  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	  <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+	  <script src="https://apis.google.com/js/api.js"></script>
+	  <script src="https://www.youtube.com/iframe_api"></script>
+	  <script src="js/settings.js"></script>
+	  <script src="js/layout.js"></script>
+	  <script src="js/videos.js"></script>
+	  <script src="js/subscriptions.js"></script>
+	  <script src="js/channels.js"></script>
+	  <script src="js/savedVideos.js"></script>
+	  <script src="js/history.js"></script>
+	  <script src="js/events.js"></script>
+	  <title>Freetube Player</title>
+	</head>
