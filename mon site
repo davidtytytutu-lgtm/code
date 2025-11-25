@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>David Officiel — The Broken Script (wiki)</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#FFD700;
+  --danger:#ff2a2a;
+  --bg:#000;
+  --glass: rgba(0,0,0,0.55);
+}
+
+/* Reset & base */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:#e6e6e6;font-family:'Press Start 2P',monospace}
+a{color:inherit; text-decoration:none}
+
+/* Animated background (blurred) */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background:url('https://archive.org/download/a805511a7481ac399c1d24a2d9face48_720w/a805511a7481ac399c1d24a2d9face48_720w.gif') center/cover no-repeat;
+  filter:blur(4px) brightness(.55);
+  opacity:.44; z-index:-2;
+}
+
+/* subtle scanlines */
+body::after{
+  content:""; position:fixed; inset:0; pointer-events:none;
+  background: repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+  mix-blend-mode:soft-light; opacity:0.12; z-index:9999;
+}
+
+/* App wrapper */
+.app{min-height:100vh; padding:24px; display:flex; flex-direction:column; align-items:center; gap:16px}
+
+/* Header / nav */
+header{text-align:center}
+header h1{margin:6px 0 0; font-size:clamp(18px,4vw,40px); color:var(--accent)}
+header p{margin:6px 0 0; font-size:12px; opacity:.9}
+
+.nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+.nav button{
+  background:rgba(8,8,8,0.72); color:#fff; border:2px solid rgba(255,255,255,0.06);
+  padding:10px 14px; border-radius:10px; cursor:pointer; font-size:12px;
+}
+.nav button:hover{ background:rgba(255,255,255,0.96); color:#000; transform:translateY(-3px)}
+
+/* Back button */
+#backBtn{position:fixed; top:14px; right:14px; padding:8px 10px; display:none; border-radius:8px; background:rgba(0,0,0,0.6); border:1px solid #fff; cursor:pointer}
+#backBtn.show{display:inline-block}
+
+/* Screens */
+.screen{ width:100%; max-width:1200px; display:none; padding:18px; border-radius:10px; background:var(--glass); border:1px solid rgba(255,255,255,0.03); box-shadow:0 10px 40px rgba(0,0,0,.6) }
+.screen.active{display:block}
+
+/* Banner cubes */
+#bannerCubes{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:14px}
+.bannerCube{width:56px;height:56px;border-radius:8px;background-size:cover; image-rendering:pixelated; border:2px solid rgba(255,255,255,0.04); animation:float 2s ease-in-out infinite alternate}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+
+/* Game container */
+.game-wrap{width:100%; height:70vh; max-height:820px; border-radius:10px; overflow:hidden; border:8px solid var(--accent); background:#000; display:flex; align-items:center; justify-content:center}
+.game-iframe{width:100%; height:100%; border:0; background:#000}
+
+/* Wiki layout */
+.wiki-grid{display:grid; grid-template-columns: 1fr 360px; gap:16px}
+@media (max-width:980px){ .wiki-grid{ grid-template-columns: 1fr } }
+
+.wiki-main{padding:12px; background:rgba(0,0,0,0.45); border-radius:8px}
+.wiki-side{padding:12px; background:rgba(0,0,0,0.35); border-radius:8px}
+
+/* Titles */
+.section-title{color:var(--danger); margin:0 0 10px 0; text-shadow:0 0 8px #000}
+
+/* Entities */
+.entity-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px}
+.entity-card{display:flex; gap:10px; padding:10px; border-radius:8px; background:rgba(0,0,0,0.45); border:1px solid rgba(255,255,255,0.03); transition:transform .16s, box-shadow .16s}
+.entity-card:hover{transform:translateY(-6px); box-shadow:0 12px 36px rgba(0,0,0,0.6)}
+.entity-thumb{width:110px; height:110px; flex:0 0 110px; border-radius:6px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#111; border:2px solid rgba(255,255,255,0.04)}
+.entity-thumb img{width:100%; height:100%; object-fit:contain; display:block}
+.entity-body{font-size:12px; line-height:1.4; color:#e6e6e6}
+.entity-name{color:var(--danger); font-size:12px; display:block; margin-bottom:6px}
+
+/* Forbidden zone */
+.forbidden-zone{margin-top:14px; padding:12px; background:rgba(10,0,0,0.45); border-radius:8px; border:1px solid rgba(255,0,0,0.08)}
+.forbidden-title{color:var(--danger); margin:0 0 8px 0}
+.forbidden-button{width:100%; padding:12px; background:rgba(30,0,0,0.8); border:2px solid var(--danger); color:#fff; cursor:pointer; border-radius:8px; font-size:12px}
+.forbidden-button.playing{background:var(--danger); color:#000}
+.secret-message{color:#ff8a8a; margin-top:8px; font-size:11px; opacity:0; transition:opacity .7s}
+
+/* Footer GIFs */
+.sitefoot{width:100%; text-align:center; padding:16px 6px; opacity:.55}
+.sitefoot img{height:70px; margin:0 8px}
+
+/* small responsive tweaks */
+@media (max-width:520px){
+  .entity-thumb{width:84px;height:84px;flex:0 0 84px}
+  .game-wrap{height:55vh}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <button id="backBtn" title="Retour accueil">Accueil</button>
+
+  <header>
+    <h1>David Officiel — The Broken Script</h1>
+    <p>Wiki local — Ambiance VHS</p>
+  </header>
+
+  <nav class="nav" aria-label="navigation principale">
+    <button data-section="accueil">Accueil</button>
+    <button data-section="minecraft">Minecraft Classic</button>
+    <button data-section="eagler">EaglerCraft 1.12</button>
+    <button data-section="wiki">Wiki — The Broken Script</button>
+    <button data-section="audio">Documents Interdits</button>
+  </nav>
+
+  <!-- ACCUEIL -->
+  <section id="accueil" class="screen active">
+    <h2 class="section-title">Accueil</h2>
+    <p style="font-size:12px;line-height:1.5; max-width:900px;">
+      Bienvenue. Ce dossier rassemble les connaissances locales sur le mod <em>The Broken Script</em>.
+      Utilise la navigation pour explorer les jeux intégrés, le wiki et les enregistrements classifiés.
+    </p>
+    <div id="bannerCubes"></div>
+  </section>
+
+  <!-- MINECRAFT CLASSIC -->
+  <section id="minecraft" class="screen">
+    <h2 class="section-title">Minecraft Classic</h2>
+    <div class="game-wrap">
+      <iframe class="game-iframe" src="https://classic.minecraft.net/?join=YOURCODE" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+    </div>
+  </section>
+
+  <!-- EAGLERCRAFT -->
+  <section id="eagler" class="screen">
+    <h2 class="section-title">EaglerCraft 1.12</h2>
+    <div class="game-wrap">
+      <iframe class="game-iframe" src="https://eaglercraft-unblocked.neocities.org/112/" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock"></iframe>
+    </div>
+  </section>
+
+  <!-- WIKI (TOUT LE WIKI DANS CETTE SECTION) -->
+  <section id="wiki" class="screen">
+    <h2 class="section-title">Wiki — The Broken Script</h2>
+
+    <div class="wiki-grid">
+      <div class="wiki-main">
+        <!-- LORE -->
+        <article id="loreBlock" style="margin-bottom:14px;">
+          <h3 style="margin:0 0 8px;">Lore</h3>
+          <div style="font-size:12px;line-height:1.45;">
+            <p><strong>Origine :</strong> Le Script est une couche méta qui régule la logique du monde. Une rupture (le Script Brisé) altère la réalité : textures, entités et règles se corrompent et se réécrivent.</p>
+            <p><strong>Cycle :</strong> Le monde subit des cycles de réécriture ; quand la corruption augmente, les anomalies et les entités spéciales deviennent plus fréquentes.</p>
+            <p><strong>Objectif :</strong> Documenter le phénomène, localiser les branches corrompues et proposer des stabilisations.</p>
+          </div>
+        </article>
+
+        <!-- ENTITÉS -->
+        <article id="entitiesBlock">
+          <h3 style="margin:0 0 8px;">Entités</h3>
+          <div class="entity-grid">
+            <!-- Null -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/Nullwatching.png?526fbf&format=original" alt="Null"></div>
+              <div class="entity-body">
+                <span class="entity-name">Null</span>
+                <div>Null est une entité semblable à un joueur et un éclat de l'âme de 0nullvoid0. Null rejoint le jeu (visible dans le chat) au début de la partie et peut apparaître ensuite dans le monde. Les interactions varient mais Null peut être raisonné.</div>
+              </div>
+            </div>
+
+            <!-- Curved -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/CurvedWiki.png?ef506b&format=original" alt="Curved"></div>
+              <div class="entity-body">
+                <span class="entity-name">Courbé (Curved)</span>
+                <div>Courbé était le joueur ColorantXD412. L'écoute du disque 13 en boucle l'a corrompu et l'a transformé en entité : modèle tremblant, téléportation visuelle et comportement erratique.</div>
+              </div>
+            </div>
+
+            <!-- Faraway -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/Faraway_in_the_wild.png?f6526b&format=original" alt="Faraway"></div>
+              <div class="entity-body">
+                <span class="entity-name">Faraway</span>
+                <div>Faraway est une entité joueur à texture blanche brillante. Elle observe et se déplace lentement si on ne la regarde pas. Elle ne cherche pas à blesser le joueur.</div>
+              </div>
+            </div>
+
+            <!-- Hetzer -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/HetzerWiki.png?6e98a3&format=original" alt="Hetzer"></div>
+              <div class="entity-body">
+                <span class="entity-name">Hetzer</span>
+                <div>Hetzer est un sphéroïde formé d'anneaux autour d'un cube. Sa texture ressemble à du bruit. À son approche, une version corrompue d'une berceuse se lance avant un arrêt brutal; ensuite l'heure passe à minuit et Circuit apparaît.</div>
+              </div>
+            </div>
+
+            <!-- Notexture -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/Notext.png?68ef1b&format=original" alt="Notexture"></div>
+              <div class="entity-body">
+                <span class="entity-name">Notexture</span>
+                <div>Notexture peut téléporter le joueur vers une autre dimension au contact et remplace les blocs par des blocs sans texture en se déplaçant. Elle semble hostile.</div>
+              </div>
+            </div>
+
+            <!-- Nothing Watches -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/Nothingwatches.png?14f623&format=original" alt="Nothing Watches"></div>
+              <div class="entity-body">
+                <span class="entity-name">Nothing Watches</span>
+                <div>Boîte noire rectangulaire. Lorsqu'elle est observée, un artefact apparaît et elle s'approche en traversant objets, endommageant et détruisant ; le contact peut provoquer un crash du jeu.</div>
+              </div>
+            </div>
+
+            <!-- r2 -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/SiluetWiki.png?3d6a16&format=original" alt="r2"></div>
+              <div class="entity-body">
+                <span class="entity-name">r2</span>
+                <div>Silhouette humanoïde déformée (~3x hauteur). Tremble erratiquement. À l'observation directe, peut se verrouiller sur le joueur et l'approcher rapidement ; le contact tue et plante la partie.</div>
+              </div>
+            </div>
+
+            <!-- Revuxor -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/RevuxorWiki.png?d3ed5b&format=original" alt="Revuxor"></div>
+              <div class="entity-body">
+                <span class="entity-name">Revuxor</span>
+                <div>Apparence Steve monochrome. Très mystérieux : il apparaît brièvement (1 tick) derrière un joueur lorsqu'il est banni.</div>
+              </div>
+            </div>
+
+            <!-- Herobrine -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/HerobrineWiki.png?55d53f&format=original" alt="Herobrine"></div>
+              <div class="entity-body">
+                <span class="entity-name">Herobrine</span>
+                <div>Peau Steve sombre et yeux blancs. Présent dans le Broken Script ; origines inconnues.</div>
+              </div>
+            </div>
+
+            <!-- Maze Shadow -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/Maze_shadow.png?fe0323&format=original" alt="Maze Shadow"></div>
+              <div class="entity-body">
+                <span class="entity-name">Maze Shadow</span>
+                <div>Anomalie noire semblable à Null. Évasive et omniprésente, sans but apparent. Plusieurs peuvent apparaître simultanément.</div>
+              </div>
+            </div>
+
+            <!-- SubAnomaly-1 -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/SubAnomaly-1.png?dfd751" alt="SubAnomaly-1"></div>
+              <div class="entity-body">
+                <span class="entity-name">SubAnomaly-1</span>
+                <div>Nuage de particules noires et spastiques. Mobile, inflige des dégâts aux joueurs proches.</div>
+              </div>
+            </div>
+
+            <!-- xXram2dieXx -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/XXram2dieXx.png?34ffe3&format=original" alt="xXram2dieXx"></div>
+              <div class="entity-body">
+                <span class="entity-name">xXram2dieXx</span>
+                <div>Entité joueur liée à 0nullvoid0 ; peut apparaître après certains triggers (ex: briser un bloc). Le serveur signale l'hébergement local puis l'heure passe à minuit.</div>
+              </div>
+            </div>
+
+            <!-- Circuit -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/CircuitWiki.png?c1e80a&format=original" alt="Circuit"></div>
+              <div class="entity-body">
+                <span class="entity-name">Circuit</span>
+                <div>Membre bas de la hiérarchie du vide, change de forme pour tromper. Hante souvent les actions du joueur et est très bruyant.</div>
+              </div>
+            </div>
+
+            <!-- Integrity -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/IntegrityWiki.png?572000&format=original" alt="Integrity"></div>
+              <div class="entity-body">
+                <span class="entity-name">Integrity</span>
+                <div>Principal antagoniste, source de la corruption du Script. Présumé présent depuis les versions alpha, il attend l'arrivée des joueurs.</div>
+              </div>
+            </div>
+
+            <!-- The Broken End -->
+            <div class="entity-card">
+              <div class="entity-thumb"><img src="https://thebrokenscript.wiki.gg/images/TBEjerk.png?67a986&format=original" alt="The Broken End"></div>
+              <div class="entity-body">
+                <span class="entity-name">The Broken End</span>
+                <div>Créature du vide massive, travaille pour Integrity. Peut tuer et prendre l'âme des joueurs ; provoque des pannes de minecraft.chatengine.</div>
+              </div>
+            </div>
+
+          </div> <!-- end entity-grid -->
+        </article>
+
+        <!-- Items / Dimensions / Events placeholders (can be filled later) -->
+        <article id="itemsBlock" style="margin-top:18px;">
+          <h3 style="margin:0 0 8px;">Items (à compléter)</h3>
+          <div style="font-size:12px;line-height:1.4;">Fragments Scriptés, Œil du Cycle, Nœud de Réécriture — descriptions détaillées peuvent être ajoutées ici.</div>
+        </article>
+
+        <article id="dimensionsBlock" style="margin-top:14px;">
+          <h3 style="margin:0 0 8px;">Dimensions (à compléter)</h3>
+          <div style="font-size:12px;line-height:1.4;">/root, /overread, /nullspace — informations et risques à documenter.</div>
+        </article>
+
+        <article id="eventsBlock" style="margin-top:14px;">
+          <h3 style="margin:0 0 8px;">Événements aléatoires (à compléter)</h3>
+          <div style="font-size:12px;line-height:1.4;">Red Pulse, Echo Footsteps, Data Storm — exemples à détailler.</div>
+        </article>
+
+      </div> <!-- end wiki-main -->
+
+      <!-- SIDE -->
+      <aside class="wiki-side">
+        <div>
+          <h4 style="margin:0 0 8px;">Navigation rapide</h4>
+          <ul style="padding-left:14px; font-size:12px; line-height:1.6;">
+            <li><a href="#" onclick="scrollToBlock('loreBlock'); return false;">Lore</a></li>
+            <li><a href="#" onclick="scrollToBlock('entitiesBlock'); return false;">Entités</a></li>
+            <li><a href="#" onclick="scrollToBlock('itemsBlock'); return false;">Items</a></li>
+            <li><a href="#" onclick="scrollToBlock('dimensionsBlock'); return false;">Dimensions</a></li>
+            <li><a href="#" onclick="scrollToBlock('eventsBlock'); return false;">Événements</a></li>
+          </ul>
+        </div>
+
+        <div class="forbidden-zone" style="margin-top:14px;">
+          <div class="forbidden-title">Documents Interdits — Accès Restreint</div>
+          <div style="font-size:12px; opacity:.9; margin-bottom:8px;">Enregistrement : <em>The Broken End Speech</em></div>
+          <button id="brokenEndBtn" class="forbidden-button">Le seul enregistrement connu de “The Broken End”</button>
+          <audio id="brokenEndAudio"><source src="https://ia600509.us.archive.org/10/items/Thebrokenendspeech/Thebrokenendspeech.ogg" type="audio/ogg"></audio>
+          <div id="secretMessage" class="secret-message">Transmission détectée... décodage en attente...</div>
+          <div style="font-size:11px; margin-top:8px; opacity:.9">Clique pour activer si l'autoplay est bloqué.</div>
+        </div>
+
+      </aside>
+    </div> <!-- end wiki-grid -->
+  </section>
+
+  <!-- DOCUMENTS (duplicate access) -->
+  <section id="audio" class="screen">
+    <h2 class="section-title">Documents Interdits — Enregistrements</h2>
+    <div style="max-width:880px;margin:auto;background:rgba(0,0,0,0.45);padding:12px;border-radius:8px;">
+      <p style="font-size:12px;line-height:1.45">Enregistrement : <strong>The Broken End Speech</strong></p>
+      <audio controls id="brokenAudioControl" src="https://ia600509.us.archive.org/10/items/Thebrokenendspeech/Thebrokenendspeech.ogg"></audio>
+      <div id="audioSecret" style="margin-top:10px;color:#ff9b9b;opacity:0">...</div>
+    </div>
+  </section>
+
+  <!-- Footer GIFs -->
+  <footer class="sitefoot">
+    <img src="https://tenor.com/tmBaHfzb6XA.gif" alt="">
+    <img src="https://tenor.com/e38J1mZCC07.gif" alt="">
+    <img src="https://tenor.com/buatR.gif" alt="">
+    <img src="https://tenor.com/hk8FpSZujPT.gif" alt="">
+  </footer>
+
+</div>
+
+<!-- Background music -->
+<audio id="bgSong" src="https://ia601906.us.archive.org/34/items/song_20251125_202511/Song.ogg" loop></audio>
+
+<script>
+/* Sections nav */
+const navButtons = document.querySelectorAll('.nav button');
+const backBtn = document.getElementById('backBtn');
+navButtons.forEach(btn=>{
+  btn.addEventListener('click', ()=> {
+    const id = btn.dataset.section;
+    showSection(id);
+  });
+});
+function showSection(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+  backBtn.classList.toggle('show', id !== 'accueil');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+backBtn.addEventListener('click', ()=> showSection('accueil'));
+
+/* Scroll to block inside wiki */
+function scrollToBlock(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  showSection('wiki');
+  setTimeout(()=> el.scrollIntoView({behavior:'smooth', block:'start'}), 220);
+}
+
+/* Banner cubes generator (uses entity images) */
+const cubeImgs = [
+  "https://thebrokenscript.wiki.gg/images/Nullwatching.png?526fbf&format=original",
+  "https://thebrokenscript.wiki.gg/images/CurvedWiki.png?ef506b&format=original",
+  "https://thebrokenscript.wiki.gg/images/Faraway_in_the_wild.png?f6526b&format=original",
+  "https://thebrokenscript.wiki.gg/images/HetzerWiki.png?6e98a3&format=original",
+  "https://thebrokenscript.wiki.gg/images/Notext.png?68ef1b&format=original",
+  "https://thebrokenscript.wiki.gg/images/Nothingwatches.png?14f623&format=original",
+  "https://thebrokenscript.wiki.gg/images/RevuxorWiki.png?d3ed5b&format=original"
+];
+function generateBannerCubes(){
+  const container = document.getElementById('bannerCubes');
+  if(!container) return;
+  container.innerHTML = '';
+  const count = Math.max(6, Math.min(18, Math.floor(window.innerWidth / 95)));
+  const used = new Set();
+  for (let i=0;i<count;i++){
+    let idx;
+    do { idx = Math.floor(Math.random()*cubeImgs.length); } while(used.has(idx) && used.size < cubeImgs.length);
+    used.add(idx);
+    const d = document.createElement('div');
+    d.className = 'bannerCube';
+    d.style.backgroundImage = `url(${cubeImgs[idx]})`;
+    d.style.animationDuration = (1.4 + Math.random()*1.6) + 's';
+    container.appendChild(d);
+  }
+}
+generateBannerCubes();
+window.addEventListener('resize', generateBannerCubes);
+
+/* Play background on first interaction if blocked */
+const bgSong = document.getElementById('bgSong');
+document.addEventListener('click', () => { if(bgSong && bgSong.paused) bgSong.play().catch(()=>{}); }, {once:true});
+
+/* Broken End button logic */
+const brokenBtn = document.getElementById('brokenEndBtn');
+const brokenAudio = document.getElementById('brokenEndAudio');
+const secretMsg = document.getElementById('secretMessage');
+const audioPanel = document.getElementById('audioSecret');
+
+if(brokenBtn){
+  brokenBtn.addEventListener('click', ()=>{
+    if(brokenAudio.paused){
+      brokenAudio.currentTime = 0;
+      brokenAudio.play().catch(()=>{});
+      brokenBtn.classList.add('playing');
+      secretMsg.style.opacity = 0;
+      setTimeout(()=> {
+        secretMsg.style.opacity = 1;
+        secretMsg.innerText = ">>> Décodage réussi. L'entité Broken End a tenté une transmission.";
+      }, 3000);
+      if(audioPanel) setTimeout(()=> audioPanel.innerText = "Message: transmission incomplète — fragments identifiés.", 3200);
+    } else {
+      brokenAudio.pause();
+      brokenBtn.classList.remove('playing');
+      secretMsg.style.opacity = 0;
+    }
+  });
+}
+
+/* Reveal note when playing control in Documents section */
+const brokenControl = document.getElementById('brokenAudioControl');
+if(brokenControl){
+  brokenControl.addEventListener('play', ()=> {
+    setTimeout(()=> {
+      const p = document.getElementById('audioSecret');
+      if(p) { p.style.opacity = 1; p.innerText = "Signal décodé partiellement : voir Documents Interdits."; }
+    }, 2500);
+  });
+}
+
+/* Initialize default view */
+showSection('accueil');
+</script>
+</body>
+</html>
