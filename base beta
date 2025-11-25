@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broken Script Wiki</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin:0;
+            padding:0;
+            background:#000;
+            color:white;
+            font-family: 'Press Start 2P', cursive;
+            overflow-x:hidden;
+            background: url('https://archive.org/download/a805511a7481ac399c1d24a2d9face48_720w/a805511a7481ac399c1d24a2d9face48_720w.gif') center/cover no-repeat;
+        }
+
+        header {
+            width:100%;
+            padding:20px;
+            text-align:center;
+            font-size:24px;
+            background:rgba(0,0,0,0.6);
+            backdrop-filter:blur(6px);
+            position:sticky;
+            top:0;
+            z-index:20;
+        }
+
+        .container {
+            width:90%;
+            max-width:1200px;
+            margin:auto;
+            padding-bottom:60px;
+        }
+
+        .category-buttons {
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center;
+            gap:15px;
+            margin:30px 0;
+        }
+
+        .category-buttons button {
+            background:#111;
+            border:1px solid #444;
+            padding:12px 24px;
+            font-size:16px;
+            cursor:pointer;
+            color:white;
+            border-radius:6px;
+            transition:0.2s;
+        }
+
+        .category-buttons button:hover {
+            background:#222;
+            transform:scale(1.05);
+        }
+
+        .section {
+            display:none;
+            opacity:0;
+            transition:opacity 0.4s ease;
+        }
+
+        .section.active {
+            display:block;
+            opacity:1;
+        }
+
+        .entity {
+            margin-bottom:30px;
+        }
+
+        .entity img {
+            width:150px;
+            height:auto;
+            display:block;
+            margin-bottom:10px;
+        }
+
+        .entity h3 {
+            margin:0 0 5px 0;
+            font-size:18px;
+        }
+
+        .entity p {
+            margin:0;
+            font-size:12px;
+        }
+
+        audio {
+            display:none;
+        }
+
+        .bottom-gifs {
+            display:flex;
+            justify-content:center;
+            gap:10px;
+            margin-top:50px;
+        }
+
+        .bottom-gifs img {
+            width:80px;
+            opacity:0.5;
+            transition:opacity 0.3s;
+        }
+
+        .bottom-gifs img:hover {
+            opacity:1;
+        }
+    </style>
+</head>
+<body>
+
+<header>Broken Script — Wiki non-officiel</header>
+
+<div class="container">
+
+    <div class="category-buttons">
+        <button onclick="showSection('entites')">Entités</button>
+        <button onclick="showSection('items')">Items</button>
+        <button onclick="showSection('dimensions')">Dimensions</button>
+        <button onclick="showSection('lore')">Lore</button>
+    </div>
+
+    <div id="entites" class="section">
+        <h2>Entités</h2>
+        <div class="entity">
+            <img src="https://thebrokenscript.wiki.gg/images/Nullwatching.png?526fbf&format=original" alt="Null">
+            <h3>Null</h3>
+            <p>Nul est une entité semblable à un joueur et un éclat de l'âme de 0nullvoid0. Null rejoint le jeu au début de la partie et apparaît dans la liste des onglets. Les interactions avec Null varient et il peut sembler erratique, mais il est possible de raisonner avec lui.</p>
+        </div>
+        <div class="entity">
+            <img src="https://thebrokenscript.wiki.gg/images/CurvedWiki.png?ef506b&format=original" alt="Courbé">
+            <h3>Courbé</h3>
+            <p>Courbé est une entité de type joueur, anciennement ColorantXD412. L'écoute du disque 13 en boucle l'a corrompu et transformé en entité. Son modèle tremble et se téléporte visuellement.</p>
+        </div>
+        <div class="entity">
+            <img src="https://thebrokenscript.wiki.gg/images/Faraway_in_the_wild.png?f6526b&format=original" alt="Lointain">
+            <h3>Faraway</h3>
+            <p>Lointain est une entité semblable à un joueur avec une texture blanche brillante. Il observe le joueur sans nuire directement et peut se déplacer lentement vers lui.</p>
+        </div>
+        <!-- Autres entités ajoutées de la même manière -->
+    </div>
+
+    <div id="items" class="section">
+        <h2>Items</h2>
+        <p>Contenu des items à ajouter...</p>
+    </div>
+
+    <div id="dimensions" class="section">
+        <h2>Dimensions</h2>
+        <p>Contenu des dimensions à ajouter...</p>
+    </div>
+
+    <div id="lore" class="section">
+        <h2>Lore</h2>
+        <p>Contenu du lore à ajouter...</p>
+        <audio src="https://ia601906.us.archive.org/34/items/song_20251125_202511/Song.ogg" autoplay loop></audio>
+    </div>
+
+    <div class="bottom-gifs">
+        <img src="https://tenor.com/tmBaHfzb6XA.gif" alt="gif1">
+        <img src="https://tenor.com/e38J1mZCC07.gif" alt="gif2">
+        <img src="https://tenor.com/buatR.gif" alt="gif3">
+        <img src="https://tenor.com/hk8FpSZujPT.gif" alt="gif4">
+    </div>
+
+</div>
+
+<script>
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
