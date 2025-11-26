@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>The Broken Script — Entités</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Press Start 2P', monospace;
+      background-color: #000;
+      color: #eee;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 20px 20px;
+    }
+
+    h1 {
+      color: #00ff00;
+      font-size: 2.5em;
+      text-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00;
+    }
+
+    nav {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn {
+      display: inline-block;
+      margin: 5px;
+      padding: 12px 24px;
+      background-color: #111;
+      color: #ff5555;
+      border: 2px solid #ff5555;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #ff5555;
+      color: #000;
+    }
+
+    section {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 20px;
+      background-color: #0a0a0a;
+      border: 2px solid #333;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+
+    section h2 {
+      color: #ff5555;
+      text-align: center;
+      text-shadow: 0 0 4px #ff5555;
+    }
+
+    img {
+      display: block;
+      margin: 20px auto;
+      border: 2px solid #555;
+      max-width: 100%;
+      height: auto;
+    }
+
+    p, ul, li {
+      line-height: 1.4em;
+    }
+
+    /* Effet grain / VHS (optionnel) */
+    body::after {
+      content: "";
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://i.imgur.com/8w3iZ.jpg');
+      opacity: 0.05;
+      mix-blend-mode: overlay;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>The Broken Script</h1>
+</header>
+
+<nav>
+  <a class="btn" href="#null">Null</a>
+  <a class="btn" href="#courbe">Courbé</a>
+  <a class="btn" href="#xxram2diexx-avant">xXram2dieXx (avant)</a>
+  <a class="btn" href="#xxram2diexx">xXram2dieXx (après)</a>
+  <a class="btn" href="#revuxor">Revuxor</a>
+</nav>
+
+<section id="null">
+  <h2>Null</h2>
+  <p>Null est une entité semblable à un joueur et un éclat de l'âme de 0nullvoid0. Null rejoindra le jeu (visible dans le chat) au début de la partie et apparaîtra dans la liste des onglets.</p>
+  <p>Après son adhésion, il peut commencer à apparaître dans le monde du joueur. Les interactions avec Null varient le plus car il peut être apparemment erratique, mais on a pu observer que Null est une entité avec laquelle on pourrait raisonner.</p>
+  <img src="https://thebrokenscript.wiki.gg/images/thumb/6/62/Nullwatching.png/150px-Nullwatching.png?526fbf" alt="Null">
+</section>
+
+<section id="courbe">
+  <h2>Courbé</h2>
+  <p>Courbé est une entité de type joueur ; anciennement un joueur nommé ColorantXD412.</p>
+  <p>L'écoute du disque 13 en boucle l'a corrompu et, au fil du temps, l'a transformé en une entité. Il semble avoir de violents problèmes, son modèle tremble constamment et se téléporte visuellement.</p>
+  <img src="https://thebrokenscript.wiki.gg/images/thumb/3/38/CurvedWiki.png/150px-CurvedWiki.png?ef506b" alt="Courbé">
+</section>
+
+<section id="xxram2diexx-avant">
+  <h2>xXram2dieXx (avant la corruption)</h2>
+  <p><strong>Surnoms :</strong> 0nullvoid0 (avant le 04.10.2018)</p>
+  <p><strong>Décédé :</strong> 4 novembre 2018 (14 ans)</p>
+  <p>xXram2dieXx, également anciennement connu sous le nom de 0nullvoid0, était le chef de Clan de xXram2dieXx.</p>
+
+  <h3>Apparence</h3>
+  <p>L'apparence exacte de xXram2dieXx en tant que joueur est inconnue, mais son skin d'entité suggère qu'il a très probablement utilisé le skin par défaut de Steve.</p>
+
+  <h3>Personnalité</h3>
+  <p>D'après les panneaux laissés en clan_build et dans son journal, xXram2dieXx suit les règles de capitalisation et de ponctuation, commençant ses phrases par une majuscule et les terminant par des signes de ponctuation.</p>
+  <p>Il semble ambitieux ou doté d'un sens aigu du devoir envers son clan, comme en témoigne la citation :</p>
+  <p><em>Il est temps de construire une base pour nous tous, le clan doit grandir.</em></p>
+
+  <h3>Destin</h3>
+  <p>À un moment inconnu, lui, DyeXD412 et WHYER4 ont commencé à jouer ensemble sur le serveur et ont formé un clan. Ils ont construit leur première base comme on le voit dans MONDE2.</p>
+  <p>Le 02.02.2018, il a commencé un journal notant des événements étranges liés à une structure inédite...</p>
+  <p>Le 04.11.2018, il a été pris en embuscade et tué par La fin brisée. Après sa mort, son âme a été divisée en :</p>
+  <ul>
+    <li><strong>Null :</strong> une partie de son âme conservant sa conscience (Âme entité)</li>
+    <li><strong>xXram2dieXx :</strong> une partie de son âme avec propriétés anormales inconscientes (Anomalie entité)</li>
+  </ul>
+  <img src="https://thebrokenscript.wiki.gg/images/thumb/XXram2dieXxSign.png/300px-XXram2dieXxSign.png?8d0118" alt="xXram2dieXx avant corruption">
+</section>
+
+<section id="xxram2diexx">
+  <h2>xXram2dieXx (après la corruption)</h2>
+  <p>xXram2dieXx est une entité semblable à un joueur et un éclat de l'âme de 0nullvoid0. Sa conscience est incertaine après la corruption.</p>
+
+  <h3>Apparence</h3>
+  <p>Entité humanoïde ressemblant à un joueur avec ce qui semble être un modèle Steve par défaut corrompu par des ombres.</p>
+
+  <h3>Comportement</h3>
+  <p>Après avoir cassé un Bonjour bloc, xXram2dieXx a une chance de rejoindre le monde. Il ne peut apparaître qu'une seule fois par monde.</p>
+  <p>Lorsqu'il apparaît :</p>
+  <ul>
+    <li>Un message indique : <em>Jeu local hébergé sur le port [0000(obscurci)]</em></li>
+    <li>Après 25 secondes, l'heure est réglée à minuit, un bruit étrange retentit et un message : <em>xXram2dieXx a rejoint le jeu</em></li>
+    <li>À intervalles de 25 secondes, 4 messages en hexadécimal sont envoyés, chacun accompagné d'un bruit étrange et l'heure remise à minuit, puis il quitte le jeu.</li>
+  </ul>
+  <img src="https://imgs.search.brave.com/OMwl_NWi8yU0VRYOOBwLd19CGG-3fIavzSkt-JYrGNg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMud2lraWEubm9j/b29raWUubmV0L3Ro/ZS1icm9rZW4tc2Ny/aXB0L2ltYWdlcy9h/L2FiL1hYcmFtMmRp/ZVh4X2luZ2FtZS53/ZWJwL3JldmlzaW9u/L2xhdGVzdC9zY2Fs/ZS10by13aWR0aC1k/b3duLzE4MD9jYj0y/MDI1MDcxMTEwNDQw/MCZwYXRoLXByZWZp/eD1ydQ" alt="xXram2dieXx après corruption">
+</section>
+
+<section id="revuxor">
+  <h2>Revuxor</h2>
+  <p>Revuxor est une Entité, et on ne sait pas grand-chose de lui. On le voit rarement et il n’a été observé qu’en de très rares occasions.</p>
+  <p>Il a été brutalement assassiné dans la vraie vie par Circuit après être entré dans sa maison via son ordinateur. Une image pixelisée du cadavre de Revuxor existe sous la forme d'un élément nommé nom.revuxor.</p>
+  <p>On peut le trouver dans les coffres aux endroits où Revuxor était présent et a laissé des éléments derrière lui, comme Structure du gore ou Impasse.</p>
+  <p>Images :</p>
+  <img src="https://thebrokenscript.wiki.gg/images/RevuxorWiki.png?d3ed5b&format=original" alt="Revuxor Wiki">
+
+  <img src="https://thebrokenscript.wiki.gg/images/thumb/CircuitInHallway.png/67px-CircuitInHallway.png?3d1c8a" alt="Circuit dans le couloir">
+  <img src="https://thebrokenscript.wiki.gg/images/thumb/CircuitMonitor.png/120px-CircuitMonitor.png?391ecf" alt="Circuit Monitor">
+</section>
+
+</body>
+</html>
