@@ -1,356 +1,143 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Windows XP — Simulacre (single file)</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows XP - Simulacre</title>
 <style>
-  /* Reset */
-  *{box-sizing:border-box}
-  html,body{
-    background: url("https://cdn.jsdelivr.net/gh/davidtytytutu-lgtm/code@main/Nyan%20cat.jpg") center/cover no-repeat;
-    image-rendering: pixelated; height:100%; margin:0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif}
-
-  /* Desktop background (XP-ish) */
-  body{
-    background: linear-gradient(180deg,#6fb5ff 0%, #2b89d4 45%, #185fa6 100%);
-    overflow:hidden;
-  }
-
-  /* Desktop icons */
-  .desktop{position:relative;width:100%;height:100%;padding:20px}
-  .icon{width:72px;text-align:center;color:#fff;cursor:default;margin:6px;display:inline-block;user-select:none}
-  .icon img{width:48px;height:48px;display:block;margin:0 auto 6px}
-  .icon label{display:block;font-size:12px;text-shadow:0 1px 0 rgba(0,0,0,0.6)}
-  .icon.selected{background:rgba(255,255,255,0.08);border-radius:4px;padding:4px}
-
-  /* Taskbar */
-  .taskbar{position:absolute;left:0;right:0;bottom:0;height:40px;background:#003d7a;border-top:2px solid rgba(255,255,255,0.08);display:flex;align-items:center;padding:4px}
-  .start-btn{display:flex;align-items:center;gap:8px;background:linear-gradient(#1b66b3,#145aa0);border:2px solid rgba(255,255,255,0.06);color:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;font-weight:700;box-shadow:inset 0 -2px 0 rgba(0,0,0,0.2)}
-  .start-btn .orb{width:20px;height:20px;border-radius:50%;background:linear-gradient(#ffefb4,#ffb84d);box-shadow:0 1px 0 rgba(255,255,255,0.35) inset}
-  .taskbar .quick{display:flex;flex:1;padding-left:12px;gap:6px}
-  .taskbar .tray{display:flex;gap:8px;padding-right:12px;color:#fff;align-items:center}
-  .taskbar .task{background:rgba(255,255,255,0.06);padding:6px 10px;border-radius:3px;color:#fff;margin-right:8px}
-
-  /* Start menu */
-  .start-menu{position:absolute;left:8px;bottom:48px;width:280px;background:linear-gradient(#ffffff,#e6f3ff);border:2px solid #5b9bd5;border-radius:6px;padding:8px;box-shadow:0 8px 20px rgba(0,0,0,0.4);display:none}
-  .start-menu h3{margin:0 0 8px;font-size:14px;color:#0b2e58}
-  .start-menu .item{padding:6px;border-radius:4px;cursor:pointer}
-  .start-menu .item:hover{background:#cfe8ff}
-
-  /* Window style (Luna-ish) */
-  .win{
-    position:absolute;width:420px;height:280px;background:#fff;border:2px solid #2b5797;border-radius:4px;box-shadow:0 8px 20px rgba(0,0,0,0.35);overflow:hidden;display:flex;flex-direction:column
-  }
-  .win .title{background:linear-gradient(#2b5797,#153e6c);color:#fff;padding:6px 8px;display:flex;align-items:center;gap:8px;cursor:move}
-  .title .controls{margin-left:auto;display:flex;gap:6px}
-  .btn{width:18px;height:18px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.08);color:#fff;font-weight:700}
-  .btn:hover{filter:brightness(1.1)}
-  .win .content{flex:1;padding:12px;overflow:auto}
-  .win.minimized{display:none}
-
-  /* Simple start menu icons & layout */
-  .start-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-  .start-app{display:flex;gap:8px;align-items:center;padding:6px;border-radius:4px}
-  .start-app img{width:28px;height:28px}
-
-  /* Responsive helper */
-  @media (max-width:500px){.win{width:92%;height:60%}}
+body, html { margin:0; padding:0; width:100%; height:100%; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow:hidden; background:#0080c0; }
+.desktop { width:100%; height:100%; position:relative; background:#0080c0 url('https://cdn.jsdelivr.net/gh/davidtytytutu-lgtm/code@main/WindowsXP-Background.jpg') center center no-repeat; background-size:cover; }
+.icon { width:72px; text-align:center; margin:16px; display:inline-block; cursor:pointer; color:white; }
+.icon img { width:48px; height:48px; display:block; margin:0 auto; }
+.icon label { display:block; font-size:12px; text-shadow:0 1px 0 rgba(0,0,0,0.6); }
+.icon.selected { background:rgba(255,255,255,0.08); border-radius:4px; padding:4px; }
+.taskbar { position:absolute; bottom:0; left:0; right:0; height:40px; background:#003d7a; display:flex; align-items:center; padding:0 8px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.5); color:white; }
+.taskbar .start-btn { display:flex; align-items:center; gap:8px; background:linear-gradient(#1b66b3,#145aa0); border:2px solid rgba(255,255,255,0.06); padding:6px 10px; border-radius:4px; cursor:pointer; font-weight:700; }
+.taskbar .start-btn .orb { width:20px; height:20px; border-radius:50%; background:linear-gradient(#ffefb4,#ffb84d); box-shadow:0 1px 0 rgba(255,255,255,0.35) inset; }
+.taskbar .quick { display:flex; flex:1; padding-left:12px; gap:6px; }
+.taskbar .tray { display:flex; gap:8px; padding-right:12px; color:#fff; align-items:center; }
+.taskbar .task { background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:3px; color:#fff; margin-right:8px; cursor:pointer; }
+.start-menu { position:absolute; left:8px; bottom:48px; width:280px; background:linear-gradient(#ffffff,#e6f3ff); border:2px solid #5b9bd5; border-radius:6px; padding:8px; box-shadow:0 8px 20px rgba(0,0,0,0.4); display:none; }
+.start-menu h3 { margin:0 0 8px; font-size:14px; color:#0b2e58; }
+.start-menu .item { padding:6px; border-radius:4px; cursor:pointer; }
+.start-menu .item:hover { background:#cfe8ff; }
+.start-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.start-app { display:flex; gap:8px; align-items:center; padding:6px; border-radius:4px; cursor:pointer; }
+.start-app img { width:28px; height:28px; }
+.win { position:absolute; width:420px; height:280px; background:#fff; border:2px solid #2b5797; border-radius:4px; box-shadow:0 8px 20px rgba(0,0,0,0.35); overflow:hidden; display:flex; flex-direction:column; }
+.win .title { background:linear-gradient(#2b5797,#153e6c); color:#fff; padding:6px 8px; display:flex; align-items:center; gap:8px; cursor:move; }
+.title .controls { margin-left:auto; display:flex; gap:6px; }
+.btn { width:18px; height:18px; border-radius:3px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; background:rgba(255,255,255,0.08); color:#fff; font-weight:700; }
+.btn:hover { filter:brightness(1.1); }
+.win .content { flex:1; padding:12px; overflow:auto; }
+.win.minimized { display:none; }
+textarea { width:100%; height:100%; resize:none; border:none; outline:none; padding:4px; font-family:monospace; font-size:14px; }
+input.search { width:100%; padding:6px; border:1px solid #ccc; border-radius:4px; margin-bottom:8px; }
 </style>
 </head>
 <body>
-  <div class="desktop" id="desktop" tabindex="0">
-    <!-- Icons -->
-    <div class="icon" id="posteTravail" data-app="notepad" style="--i:0">
-      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48'><rect width='44' height='34' x='2' y='6' fill='%23ffd27a' stroke='%23c27500' stroke-width='2' rx='3'/><rect x='8' y='12' width='28' height='4' fill='%23fff'/></svg>" alt="explorer">
-      <label>Poste de travail</label>
+<div class="desktop" id="desktop" tabindex="0">
+    <div class="icon" data-app="explorer">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48'><rect width='44' height='34' x='2' y='6' fill='%23ffd27a' stroke='%23c27500' stroke-width='2' rx='3'/><rect x='8' y='12' width='28' height='4' fill='%23fff'/></svg>" alt="explorer">
+        <label>Poste de travail</label>
     </div>
-
     <div class="icon" data-app="about">
-      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48'><circle cx='24' cy='16' r='12' fill='%23ffffff' stroke='%23003366' stroke-width='2'/><rect x='12' y='30' width='24' height='8' rx='2' fill='%23003366'/></svg>" alt="about">
-      <label>A propos</label>
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48'><circle cx='24' cy='16' r='12' fill='%23ffffff' stroke='%23003366' stroke-width='2'/><rect x='12' y='30' width='24' height='8' rx='2' fill='%23003366'/></svg>" alt="about">
+        <label>A propos</label>
     </div>
-
     <div class="icon" data-app="browser">
-      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48'><circle cx='24' cy='24' r='20' fill='%2300aaff' /><path d='M6,24 a18,18 0 0,0 36,0' stroke='%23fff' stroke-width='3' fill='none'/></svg>" alt="browser">
-      <label>Navigateur</label>
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48'><circle cx='24' cy='24' r='20' fill='%2300aaff'/><path d='M6,24 a18,18 0 0,0 36,0' stroke='%23fff' stroke-width='3' fill='none'/></svg>" alt="browser">
+        <label>Navigateur</label>
     </div>
-
-  </div>
-
-  <!-- Taskbar -->
-  <div class="taskbar">
-    <div class="start-btn" id="startBtn" role="button" aria-haspopup="true">
-      <div class="orb" aria-hidden="true"></div>
-      <div>Démarrer</div>
-    </div>
+</div>
+<div class="taskbar">
+    <div class="start-btn" id="startBtn"><div class="orb"></div>Démarrer</div>
+    <input id="globalSearch" placeholder="Rechercher..." style="margin-left:8px; padding:4px; width:220px; border-radius:4px; border:1px solid #666;">
+    <button id="globalSearchBtn" style="margin-left:4px; padding:4px 10px; border-radius:4px; border:1px solid #333; background:#e4e4e4;">OK</button>
     <div class="quick" id="quickbar"></div>
-    <div class="tray">
-      <div class="task" id="time">--:--</div>
-    </div>
-  </div>
-
-  <!-- Start menu -->
-  <div class="start-menu" id="startMenu">
+    <div class="tray"><div class="task" id="time">--:--</div></div>
+</div>
+<div class="start-menu" id="startMenu">
     <h3>Menu Démarrer</h3>
     <div class="start-grid">
-      <div class="start-app" data-open="explorer"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><rect width='26' height='18' x='1' y='5' fill='%23ffd27a' stroke='%23c27500' stroke-width='1' rx='2'/></svg>"><div>Poste de travail</div></div>
-      <div class="start-app" data-open="browser"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><circle cx='14' cy='14' r='12' fill='%2300aaff'/></svg>"><div>Navigateur</div></div>
-      <div class="start-app" data-open="about"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><circle cx='14' cy='10' r='6' fill='%23fff' stroke='%23003366' stroke-width='1'/><rect x='6' y='18' width='16' height='6' rx='2' fill='%23003366'/></svg>"><div>A propos</div></div>
-      <div class="start-app" id="shutdown"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><path d='M14 4 v10' stroke='%23ff6b6b' stroke-width='2' stroke-linecap='round' fill='none' /><circle cx='14' cy='18' r='6' stroke='%23ff6b6b' stroke-width='2' fill='none' /></svg>"><div>Arrêter</div></div>
+        <div class="start-app" data-open="explorer">Poste de travail</div>
+        <div class="start-app" data-open="browser">Navigateur</div>
+        <div class="start-app" data-open="about">A propos</div>
     </div>
-  </div>
-
-  <!-- Windows container (windows are created by JS) -->
-
+</div>
 <script>
-// Ouvrir le bloc-notes en popup depuis Poste de travail
-const poste = document.getElementById('posteTravail');
-if (poste) {
-  poste.addEventListener('click', () => {
-    ouvrirPopupBlocNote();
-  });
-}
-// --- Minimal windowing system ---
-let z = 10;
-const desktop = document.getElementById('desktop');
-const startBtn = document.getElementById('startBtn');
-const startMenu = document.getElementById('startMenu');
-const timeEl = document.getElementById('time');
-
-// Update clock
-function updateClock(){
-  const d = new Date();
-  timeEl.textContent = d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-}
+let z=10;
+const desktop=document.getElementById('desktop');
+const startBtn=document.getElementById('startBtn');
+const startMenu=document.getElementById('startMenu');
+const timeEl=document.getElementById('time');
+function updateClock(){ const d=new Date(); timeEl.textContent=d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
 setInterval(updateClock,1000); updateClock();
-
-// Helper: create window
-function createWindow(opts){
-  const win = document.createElement('div'); win.className='win';
-  win.style.left = (50 + Math.random()*200)+'px';
-  win.style.top = (50 + Math.random()*120)+'px';
-  win.style.zIndex = ++z;
-  win.dataset.app = opts.id || 'win';
-
-  win.innerHTML = `
-    <div class='title'>
-      <div class='caption'>${opts.title}</div>
-      <div class='controls'>
-        <div class='btn' data-action='min'>—</div>
-        <div class='btn' data-action='max'>☐</div>
-        <div class='btn' data-action='close'>✕</div>
-      </div>
-    </div>
-    <div class='content'>${opts.content}</div>
-  `;
-
-  // Events
-  const title = win.querySelector('.title');
-  title.addEventListener('pointerdown', startDrag);
-  win.querySelectorAll('.btn').forEach(b=>{
-    b.addEventListener('click', (e)=>{
-      const a = b.dataset.action;
-      if(a==='min'){ win.classList.add('minimized'); }
-      if(a==='max'){ win.style.width='calc(100% - 40px)'; win.style.height='calc(100% - 100px)'; win.style.left='20px'; win.style.top='20px'; }
-      if(a==='close'){ win.remove(); }
-    });
-  });
-
-  win.addEventListener('pointerdown', ()=>{ win.style.zIndex = ++z; });
-  desktop.appendChild(win);
-  return win;
-}
-
-// Dragging
-let drag = null;
-function startDrag(e){
-  const win = e.currentTarget.closest('.win');
-  drag = {win, startX:e.clientX, startY:e.clientY, x: parseInt(win.style.left||0), y: parseInt(win.style.top||0)};
-  document.addEventListener('pointermove', doDrag);
-  document.addEventListener('pointerup', endDrag);
-}
-function doDrag(e){
-  if(!drag) return;
-  const dx = e.clientX - drag.startX, dy = e.clientY - drag.startY;
-  drag.win.style.left = (drag.x + dx)+'px';
-  drag.win.style.top = (drag.y + dy)+'px';
-}
-function endDrag(){ document.removeEventListener('pointermove', doDrag); document.removeEventListener('pointerup', endDrag); drag = null; }
-
-// Start menu
-startBtn.addEventListener('click', (e)=>{ startMenu.style.display = startMenu.style.display==='block' ? 'none' : 'block'; });
-document.addEventListener('click', (e)=>{ if(!startMenu.contains(e.target) && !startBtn.contains(e.target)) startMenu.style.display='none'; });
-
-// Desktop icon interactions (single click select, double click open)
-let lastClick = 0; let lastIcon = null;
-desktop.querySelectorAll('.icon').forEach(icon=>{
-  icon.addEventListener('click', (e)=>{
-    const now = Date.now();
-    if(lastIcon===icon && now-lastClick<400){ // double click
-      openApp(icon.dataset.app);
-    } else {
-      desktop.querySelectorAll('.icon').forEach(i=>i.classList.remove('selected'));
-      icon.classList.add('selected');
-    }
-    lastClick = now; lastIcon = icon;
-  });
-});
-
-// Start menu app open
-startMenu.querySelectorAll('[data-open]').forEach(el=> el.addEventListener('click', ()=> openApp(el.dataset.open) ));
+function createWindow(opts){ const win=document.createElement('div'); win.className='win'; win.style.left=(50+Math.random()*200)+'px'; win.style.top=(50+Math.random()*120)+'px'; win.style.zIndex=++z; win.dataset.app=opts.id||'win'; win.innerHTML=`<div class='title'><div class='caption'>${opts.title}</div><div class='controls'><div class='btn' data-action='min'>—</div><div class='btn' data-action='max'>☐</div><div class='btn' data-action='close'>✕</div></div></div><div class='content'>${opts.content}</div>`; win.querySelector('.title').addEventListener('pointerdown', startDrag); win.querySelectorAll('.btn').forEach(b=>{b.addEventListener('click',()=>{const a=b.dataset.action;if(a==='min'){win.classList.add('minimized');}if(a==='max'){win.style.width='calc(100% - 40px)';win.style.height='calc(100% - 100px)';win.style.left='20px';win.style.top='20px';}if(a==='close'){win.remove();}});}); win.addEventListener('pointerdown',()=>{win.style.zIndex=++z;}); desktop.appendChild(win); return win; }
+let drag=null;
+function startDrag(e){const win=e.currentTarget.closest('.win'); drag={win,startX:e.clientX,startY:e.clientY,x:parseInt(win.style.left||0),y:parseInt(win.style.top||0)}; document.addEventListener('pointermove',doDrag); document.addEventListener('pointerup',endDrag);}
+function doDrag(e){if(!drag)return; const dx=e.clientX-drag.startX,dy=e.clientY-drag.startY; drag.win.style.left=(drag.x+dx)+'px'; drag.win.style.top=(drag.y+dy)+'px';}
+function endDrag(){document.removeEventListener('pointermove',doDrag); document.removeEventListener('pointerup',endDrag); drag=null;}
+startBtn.addEventListener('click',()=>{startMenu.style.display=startMenu.style.display==='block'?'none':'block';});
+document.addEventListener('click',e=>{if(!startMenu.contains(e.target)&&!startBtn.contains(e.target))startMenu.style.display='none';});
+desktop.querySelectorAll('.icon').forEach(icon=>{let lastClick=0; let lastIcon=null; icon.addEventListener('click',e=>{const now=Date.now(); if(lastIcon===icon && now-lastClick<400){openApp(icon.dataset.app);}else{desktop.querySelectorAll('.icon').forEach(i=>i.classList.remove('selected')); icon.classList.add('selected');} lastClick=now; lastIcon=icon;});});
+startMenu.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',()=>openApp(el.dataset.open)));
 
 function openApp(id){
-  if(id==='explorer'){
-    // ancienne fenêtre explorer remplacée par le bloc-notes
-    createNotepadWindow();
-  } else if(id==='browser'){
-    createWindow({id:'browser', title:'Navigateur', content:'<h2>Navigateur</h2><p>Ceci est une page intégrée. Vous pouvez personnaliser le contenu HTML ici.</p>'});
-  } else if(id==='about'){
-    createWindow({id:'about', title:'A propos', content:'<h2>A propos</h2><p>Site single-file imitateur Windows XP — créé par toi.</p>'});
-  } else if(id==='notepad'){
-    createNotepadWindow();
-  }
-  startMenu.style.display='none';
+if(id==='explorer'){
+    let savedText = localStorage.getItem('notepadContent') || '';
+    createWindow({id:'explorer',title:'Bloc-notes',content:`<textarea id='notepad'>${savedText}</textarea><button id='saveBtn' style='margin-top:8px;'>Sauvegarder</button>`});
+    const w = [...document.querySelectorAll('.win')].find(a=>a.dataset.app==='explorer');
+    const textarea = w.querySelector('#notepad');
+    const saveBtn = w.querySelector('#saveBtn');
+    saveBtn.addEventListener('click',()=>{ localStorage.setItem('notepadContent', textarea.value); alert('Texte sauvegardé !'); });
+}else if(id==='browser'){
+    const w=createWindow({id:'browser',title:'Navigateur',content:`<h2>Navigateur</h2><form id='searchForm_browser'><input type='text' id='searchInput_browser' placeholder='Rechercher...' style='width:70%; padding:4px;'><button type='submit'>OK</button></form><div id='searchResults_browser' style='margin-top:10px; font-size:14px;'></div>`});
+    setTimeout(()=>{
+        const f=w.querySelector('#searchForm_browser');
+        const i=w.querySelector('#searchInput_browser');
+        f.addEventListener('submit', async e=>{
+            e.preventDefault();
+            const out=w.querySelector('#searchResults_browser');
+            out.innerHTML='<p>Recherche…</p>';
+            const r=await fetch('https://api.duckduckgo.com/?q='+encodeURIComponent(i.value)+'&format=json&no_redirect=1&no_html=1');
+            const data=await r.json();
+            let html='';
+            if(data.AbstractText){ html+=`<p><b>${data.Heading}</b><br>${data.AbstractText}</p>`; }
+            if(data.RelatedTopics){ html+='<ul>'+data.RelatedTopics.slice(0,8).map(t=>t.Text?`<li>${t.Text}</li>`:'').join('')+'</ul>'; }
+            if(!html) html='<p>Aucun résultat trouvé.</p>';
+            out.innerHTML=html;
+        });
+    },50);
 }
+startMenu.style.display='none';}
 
-// Création d'une vraie fenêtre Bloc-notes intégrée (avec menu, ouvrir/enregistrer)
-function createNotepadWindow(){
-  const id = 'notepad-' + Date.now();
-  const content = document.createElement('div');
-  content.style.display='flex';
-  content.style.flexDirection='column';
-  content.style.height='100%';
-
-  // menu bar
-  const menubar = document.createElement('div');
-  menubar.style.display='flex';
-  menubar.style.gap='8px';
-  menubar.style.padding='6px';
-  menubar.style.background='#e6eef8';
-  menubar.style.borderBottom='1px solid #cbdff5';
-
-  const fileMenu = document.createElement('div'); fileMenu.textContent='Fichier'; fileMenu.style.cursor='default';
-  const editMenu = document.createElement('div'); editMenu.textContent='Édition'; editMenu.style.cursor='default';
-  const formatMenu = document.createElement('div'); formatMenu.textContent='Format'; formatMenu.style.cursor='default';
-  menubar.appendChild(fileMenu); menubar.appendChild(editMenu); menubar.appendChild(formatMenu);
-
-  // toolbar actions (hidden simple menu)
-  const toolbar = document.createElement('div'); toolbar.style.display='flex'; toolbar.style.padding='8px'; toolbar.style.gap='8px';
-  const btnNew = document.createElement('button'); btnNew.textContent='Nouveau';
-  const btnOpen = document.createElement('button'); btnOpen.textContent='Ouvrir';
-  const btnSave = document.createElement('button'); btnSave.textContent='Enregistrer';
-  toolbar.appendChild(btnNew); toolbar.appendChild(btnOpen); toolbar.appendChild(btnSave);
-
-  // textarea
-  const area = document.createElement('textarea');
-  area.style.flex='1'; area.style.resize='none'; area.style.border='none'; area.style.outline='none'; area.style.padding='8px'; area.style.fontFamily='monospace'; area.style.fontSize='14px';
-
-  content.appendChild(menubar);
-  content.appendChild(toolbar);
-  content.appendChild(area);
-
-  const win = createWindow({id:id, title:'Bloc-notes', content: content.innerHTML});
-
-  // replace inner content node (since createWindow used HTML string)
-  const realWin = [...document.querySelectorAll('.win')].find(w=>w.dataset.app===id);
-  if(realWin){
-    const contentNode = realWin.querySelector('.content');
-    contentNode.innerHTML='';
-    contentNode.appendChild(menubar);
-    contentNode.appendChild(toolbar);
-    contentNode.appendChild(area);
-
-    // wire buttons
-    btnNew.addEventListener('click', ()=>{ if(confirm('Nouveau fichier ? Le texte non sauvegardé sera perdu.')) area.value=''; });
-    btnOpen.addEventListener('click', ()=>{
-      const input = document.createElement('input'); input.type='file'; input.accept='.txt';
-      input.onchange = (e)=>{
-        const file = e.target.files[0]; if(!file) return;
-        const reader = new FileReader();
-        reader.onload = ()=> area.value = reader.result;
-        reader.readAsText(file);
-      };
-      input.click();
+const obs=new MutationObserver(()=>{
+    const quick=document.getElementById('quickbar'); quick.innerHTML='';
+    document.querySelectorAll('.win').forEach(w=>{
+        const b=document.createElement('div'); b.className='task'; b.textContent=w.querySelector('.caption').textContent;
+        b.addEventListener('click',()=>{if(w.classList.contains('minimized')) w.classList.remove('minimized'); w.style.zIndex=++z;});
+        quick.appendChild(b);
     });
-    btnSave.addEventListener('click', ()=>{
-      const blob = new Blob([area.value], {type:'text/plain'});
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='note.txt'; a.click(); URL.revokeObjectURL(a.href);
-    });
-
-    // simple edit menu shortcuts
-    editMenu.addEventListener('click', ()=>{ area.focus(); document.execCommand('selectAll'); document.execCommand('copy'); alert('Texte sélectionné et copié (simulé)'); });
-  }
-
-  // ensure quickbar refresh
-  refreshQuickbar();
-}
-
-
-
-// Quick launch area (add a small button for each running window)
-function refreshQuickbar(){
-  const quick = document.getElementById('quickbar'); quick.innerHTML='';
-  document.querySelectorAll('.win').forEach(w=>{
-    const b = document.createElement('div'); b.className='task'; b.textContent = w.querySelector('.caption').textContent;
-    b.addEventListener('click', ()=>{ if(w.classList.contains('minimized')) w.classList.remove('minimized'); w.style.zIndex = ++z; });
-    quick.appendChild(b);
-  });
-}
-
-// Observe additions/removals
-const obs = new MutationObserver(refreshQuickbar);
+});
 obs.observe(desktop,{childList:true});
-
-// Keyboard: press Esc to close top window
-document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ const wins = document.querySelectorAll('.win'); if(wins.length) wins[wins.length-1].remove(); } });
-
-// Nice: open a welcome window at start
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const wins=document.querySelectorAll('.win'); if(wins.length) wins[wins.length-1].remove();}});
 openApp('about');
-// Création d'un vrai bloc-notes interne (sans iframe)
-function ouvrirPopupBlocNote() {
-  const popup = document.createElement('div');
-  popup.style.position = 'absolute';
-  popup.style.left = '140px';
-  popup.style.top = '140px';
-  popup.style.width = '600px';
-  popup.style.height = '400px';
-  popup.style.background = '#ECE9D8';
-  popup.style.border = '2px solid #0A246A';
-  popup.style.zIndex = 999;
-  popup.style.display = 'flex';
-  popup.style.flexDirection = 'column';
 
-  const barre = document.createElement('div');
-  barre.style.background = '#0A246A';
-  barre.style.color = 'white';
-  barre.style.padding = '6px';
-  barre.style.cursor = 'move';
-  barre.innerText = 'Bloc-notes';
-
-  const fermer = document.createElement('span');
-  fermer.innerText = ' X';
-  fermer.style.float = 'right';
-  fermer.style.cursor = 'pointer';
-  fermer.onclick = () => popup.remove();
-  barre.appendChild(fermer);
-
-  const zone = document.createElement('textarea');
-  zone.style.flex = '1';
-  zone.style.margin = '0';
-  zone.style.border = 'none';
-  zone.style.outline = 'none';
-  zone.style.padding = '8px';
-  zone.style.fontFamily = 'monospace';
-  zone.style.fontSize = '14px';
-  zone.style.resize = 'none';
-  zone.style.background = 'white';
-
-  popup.appendChild(barre);
-  popup.appendChild(zone);
-  document.body.appendChild(popup);
-}
+// Recherche globale
+const g=document.getElementById('globalSearch');
+const gb=document.getElementById('globalSearchBtn');
+gb.addEventListener('click',()=>{
+    openApp('browser');
+    setTimeout(()=>{
+        const w=[...document.querySelectorAll('.win')].find(a=>a.dataset.app==='browser');
+        if(!w) return;
+        const input=w.querySelector('#searchInput_browser');
+        input.value=g.value;
+        w.querySelector('#searchForm_browser').dispatchEvent(new Event('submit'));
+    },80);
+});
 </script>
 </body>
 </html>
+
