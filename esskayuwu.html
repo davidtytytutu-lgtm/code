@@ -1,0 +1,699 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+:root{
+  --bg:#07070f; --panel:#0e0e1c; --panel2:#141428;
+  --pink:#ff2e88; --pink2:#ff7ab8; --cyan:#00e5ff; --purple:#9d4dff;
+  --lime:#a6ff00; --text:#e8e8ff; --dim:#8b8ba8;
+  --sfw-accent:var(--cyan); --nsfw-accent:var(--pink);
+}
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'VT323',monospace; font-size:20px; line-height:1.35;
+  text-align:left; min-height:100vh; overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, #1a0b2e 0%, transparent 60%),
+    radial-gradient(ellipse at 90% 20%, #0b2e3a 0%, transparent 55%),
+    linear-gradient(#07070f,#07070f);
+}
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:9999;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px);
+  mix-blend-mode:multiply; opacity:.7;
+}
+body::after{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:10000;
+  background:linear-gradient(transparent 95%, rgba(0,229,255,.08) 100%);
+  animation:flick 4s infinite steps(60);
+}
+@keyframes flick{0%,100%{opacity:.6}50%{opacity:1}10%{transform:translateY(0)}11%{transform:translateY(-2px)}12%{transform:translateY(0)}}
+a{color:var(--cyan)}
+.topbar{
+  display:flex; align-items:center; gap:12px; padding:10px 14px;
+  background:#0a0a18; border-bottom:3px solid var(--cyan);
+  position:sticky; top:0; z-index:50;
+}
+body.nsfw .topbar{border-bottom-color:var(--pink)}
+.logo-dot{width:12px;height:12px;background:#ff0033;border-radius:50%;box-shadow:0 0 8px #ff0033;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+.title-pixel{font-family:'Press Start 2P',monospace; font-size:13px; letter-spacing:.5px}
+.title-pixel span{color:var(--cyan)} body.nsfw .title-pixel span{color:var(--pink)}
+.live-badge{font-family:'Press Start 2P',monospace; font-size:9px; background:#ff0033; color:#fff; padding:5px 7px; border:2px solid #fff3; margin-left:8px}
+.viewers{margin-left:auto; font-size:18px; color:var(--dim); white-space:nowrap}
+.viewers b{color:var(--lime)}
+.layout{max-width:1180px; margin:0 auto; padding:14px; display:grid; grid-template-columns:1fr 320px; gap:14px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{order:2}}
+.chat-shell{background:var(--panel); border:3px solid #2a2a4a; box-shadow:0 0 0 3px #000, 0 0 24px #00e5ff22; position:relative; overflow:hidden}
+body.nsfw .chat-shell{box-shadow:0 0 0 3px #000, 0 0 28px #ff2e8844}
+.chat-head{display:flex; gap:12px; align-items:center; padding:12px; background:linear-gradient(180deg,#1a1a36,#101024); border-bottom:2px dashed #33335a}
+.avatar{width:74px;height:74px; image-rendering:pixelated; border:3px solid var(--cyan); background:#000; object-fit:cover; flex-shrink:0}
+body.nsfw .avatar{border-color:var(--pink)}
+.head-info{flex:1; min-width:0}
+.head-name{font-family:'Press Start 2P',monospace; font-size:12px; margin:0}
+.head-sub{color:var(--dim); font-size:18px}
+.mode-row{display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; align-items:center}
+.pill{font-family:'Press Start 2P',monospace; font-size:9px; padding:7px 9px; border:2px solid; cursor:pointer; background:#000; user-select:none}
+.pill.sfw{color:var(--cyan); border-color:var(--cyan)} .pill.sfw.on{background:var(--cyan); color:#000}
+.pill.nsfw{color:var(--pink); border-color:var(--pink)} .pill.nsfw.on{background:var(--pink); color:#000; animation:neon 1s infinite alternate}
+@keyframes neon{to{box-shadow:0 0 14px var(--pink)}}
+.pill.small{font-size:8px; opacity:.9}
+.cmd-hint{font-size:17px; color:var(--dim)} .cmd-hint code{color:var(--lime); background:#000; padding:1px 6px; border:1px solid #333}
+#chatBox{height:52vh; min-height:340px; max-height:620px; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:10px; background:
+  linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
+  repeating-linear-gradient(0deg, #0d0d1f 0 22px, #0b0b1b 22px 44px);}
+.msg{max-width:86%; padding:8px 11px; border:2px solid #33335a; background:#16162e; position:relative; word-wrap:break-word}
+.msg.bot{align-self:flex-start; border-left:4px solid var(--cyan)}
+body.nsfw .msg.bot{border-left-color:var(--pink)}
+.msg.user{align-self:flex-end; background:#0a2a36; border-color:var(--cyan); border-right:4px solid var(--cyan)}
+.msg.sys{align-self:center; background:#000; border:1px dashed var(--dim); color:var(--dim); font-size:18px; max-width:95%; text-align:center}
+.msg .who{font-family:'Press Start 2P',monospace; font-size:8px; color:var(--dim); display:block; margin-bottom:4px}
+.msg.bot .who{color:var(--cyan)} body.nsfw .msg.bot .who{color:var(--pink)}
+.msg.user .who{color:var(--lime)}
+.msg .time{font-size:15px; color:#55557a; margin-left:8px}
+.typing{display:inline-block} .typing i{display:inline-block; width:7px;height:7px;background:var(--cyan);margin-right:3px;animation:tb 1s infinite} .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes tb{50%{opacity:.2; transform:translateY(-3px)}}
+.chips{display:flex; gap:8px; flex-wrap:wrap; padding:10px 12px; background:#0a0a18; border-top:2px solid #222244}
+.chip{font-size:18px; background:#1a1a36; border:2px solid #44446a; color:var(--text); padding:4px 10px; cursor:pointer; border-radius:20px}
+.chip:hover{border-color:var(--cyan); color:var(--cyan)} body.nsfw .chip:hover{border-color:var(--pink); color:var(--pink)}
+.input-row{display:flex; gap:8px; padding:12px; background:#0a0a18; border-top:3px solid #2a2a4a}
+#chatInput{flex:1; background:#000; border:2px solid #44446a; color:var(--text); font-family:'VT323',monospace; font-size:21px; padding:10px 12px; outline:none}
+#chatInput:focus{border-color:var(--cyan)} body.nsfw #chatInput:focus{border-color:var(--pink)}
+.btn{font-family:'Press Start 2P',monospace; font-size:10px; padding:12px 14px; border:2px solid; cursor:pointer; background:#000}
+.btn.send{color:#000; background:var(--cyan); border-color:var(--cyan)} body.nsfw .btn.send{background:var(--pink); border-color:var(--pink); color:#000}
+.btn.ghost{color:var(--dim); border-color:#44446a}
+.sidebar{display:flex; flex-direction:column; gap:12px}
+.card{background:var(--panel2); border:3px solid #2a2a4a; padding:12px}
+.card h3{font-family:'Press Start 2P',monospace; font-size:10px; margin:0 0 10px 0; color:var(--cyan)}
+body.nsfw .card h3{color:var(--pink)}
+.kv{display:grid; grid-template-columns:86px 1fr; gap:5px 10px; font-size:20px; line-height:1.4}
+.kv b{color:#fff; font-weight:normal; min-width:0} .kv span{color:var(--dim); min-width:0; overflow-wrap:anywhere; word-break:break-word}
+.msg{line-height:1.45; font-size:21px}
+.card{overflow:hidden}
+#chatBox{line-height:1.45}
+.tag{display:inline-block; background:#000; border:1px solid #444; padding:1px 7px; margin:2px 3px 2px 0; font-size:17px; color:var(--text)}
+.social{display:block; color:var(--cyan); text-decoration:none; margin:3px 0; font-size:19px}
+.social small{color:var(--dim)}
+.disclaimer{font-size:17px; color:var(--dim); background:#000; border:2px dashed #444; padding:10px}
+.footer{text-align:center; color:var(--dim); font-size:17px; padding:18px 10px 40px}
+.glitch{position:relative} .glitch::after{content:attr(data-t); position:absolute; left:2px; top:0; color:var(--pink); opacity:0; pointer-events:none}
+body.nsfw .glitch::after{opacity:.8; animation:gl 2s infinite steps(2)}
+@keyframes gl{0%{clip-path:inset(0 0 60% 0); transform:translate(-2px,-1px)}20%{clip-path:inset(30% 0 30% 0); transform:translate(2px,1px)}40%{clip-path:inset(60% 0 0 0); transform:translate(-1px,0)}60%,100%{clip-path:inset(0 0 100% 0)}}
+/* modal 18+ */
+#ageModal{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; z-index:10001; padding:16px}
+#ageModal.show{display:flex}
+.modal-box{background:#0e0e1c; border:3px solid var(--pink); max-width:480px; width:100%; padding:20px; box-shadow:0 0 40px #ff2e8866}
+.modal-box h2{font-family:'Press Start 2P',monospace; font-size:13px; color:var(--pink); margin-top:0}
+.modal-box p{font-size:20px}
+.modal-btns{display:flex; gap:10px; margin-top:14px}
+#vhs{position:fixed; top:54px; right:12px; z-index:60; font-size:18px; color:#fff; background:#000a; padding:3px 8px; border:1px solid #444; letter-spacing:1px}
+.media-img{width:100%; max-height:360px; object-fit:cover; border:2px solid #44446a; background:#000; display:block; margin-top:8px}
+body.nsfw .media-img{border-color:var(--pink)}
+.media-vid{width:100%; max-height:340px; background:#000; border:2px solid var(--pink); display:block; margin-top:8px}
+.media-cap{font-size:18px; color:var(--dim); margin-top:4px}
+.media-btns{display:flex; gap:6px; margin-top:6px}
+.media-btns a{font-size:17px; color:var(--cyan); text-decoration:none; border:1px solid #444; padding:2px 8px; background:#000}
+</style>
+
+<div id="vhs">▶ 00:00:00 &nbsp; SP</div>
+
+<div class="topbar">
+  <div class="logo-dot"></div>
+  <div class="title-pixel" data-t="ESSKAYUWU.EXE">ESSKAYUWU<span>.EXE</span> // MEGA CHILL CHAT</div>
+  <div class="live-badge">● LIVE-ish</div>
+  <div class="viewers">👁 <b id="viewerCount">1384</b> chill viewers</div>
+</div>
+
+<div class="layout">
+  <div class="chat-shell">
+    <div class="chat-head">
+      <img class="avatar" src="https://cdn.jsdelivr.net/gh/davidtytytutu-lgtm/code@main/esskayuwu/mon%20corp.jpg" alt="esskay photo">
+      <div class="head-info">
+        <p class="head-name glitch" data-t="ESSKAY-CHAN v95" id="botNameEl">ESSKAY-CHAN v95</p>
+        <div class="head-sub" id="statusEl">🟢 en ligne — Mega Chill Mode • répond en FR + slang EN owO</div>
+        <div class="mode-row">
+          <div class="pill sfw on" id="sfwPill">☁ SFW CHILL</div>
+          <div class="pill nsfw" id="nsfwPill">🔥 NSFW 18+</div>
+          <div class="pill small ghost" id="helpPill" style="border-color:#555;color:#aaa">/help</div>
+          <span class="cmd-hint">tape <code>/nsfw</code> pour 100% NSFW • <code>/sfw</code> pour revenir chill</span>
+        </div>
+      </div>
+    </div>
+    <div id="chatBox"></div>
+    <div class="chips" id="chipsBox"></div>
+    <div class="input-row">
+      <input id="chatInput" maxlength="500" placeholder="dis quelque chose... ( /nsfw pour mode 18+ )" autocomplete="off">
+      <button class="btn ghost" id="clipBtn" title="phrase random">🎲</button>
+      <button class="btn send" id="sendBtn">ENVOYER ▸</button>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="card">
+      <h3>▚ PROFILE // ESSKAYUWU (fan-lore)</h3>
+      <div class="kv">
+        <b>âge</b><span>30 ans — 6 nov 1995, Scorpion</span>
+        <b>taille</b><span>~163 cm / ~53 kg, cheveux + yeux noirs</span>
+        <b>pays</b><span>USA, anglais, vrai nom inconnu (vie privée 🔒)</span>
+        <b>pet</b><span>🐶 un chien</span>
+        <b>style</b><span>🎧 MEGA CHILL, amie pas présentatrice</span>
+        <b>marque</b><span>bandana noir mâchoires blanches (nez+bouche cachés)</span>
+        <b>status</b><span>Twitch Partner, depuis fév 2022 / régulier depuis oct 2022</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>▚ STATS TWITCH</h3>
+      <div class="kv">
+        <b>followers</b><span>~212 400 (+3 200 / 30j)</span>
+        <b>subs</b><span>~300 — communauté engagée</span>
+        <b>30j</b><span>154h stream, ~199k h vues, 1286-1400 avg, pic 2061</span>
+        <b>record</b><span>3522 viewers le 28 mai 2023</span>
+        <b>2026</b><span>761k h vues, avg 784, pic 2424</span>
+        <b>rank</b><span>~2200e avg / 5018e pic / #8 Marvel Rivals</span>
+        <b>public</b><span>USA, majoritairement masculin 20-24 ans</span>
+        <b>horaires</b><span>Lun-Sam dès 2-3h ET, ~5h30, favori: lundi 3h</span>
+        <b>titres</b><span>MEGA CHILL STREAM / COME SAY HELLO</span>
+      </div>
+      <div style="margin-top:8px">
+        <span class="tag">Marvel Rivals 92h</span><span class="tag">Just Chatting 810h 2025</span><span class="tag">OSRS 601h</span><span class="tag">Megabonk</span><span class="tag">BALL x PIT</span><span class="tag">Schedule I</span><span class="tag">Digimon Time Stranger</span><span class="tag">Clair Obscur E33</span><span class="tag">Silent Hill f</span><span class="tag">Oblivion Remastered</span><span class="tag">Waterpark Sim</span><span class="tag">SF6</span><span class="tag">MH Wilds</span><span class="tag">Dragonwilds</span><span class="tag">Hollow Knight</span><span class="tag">PoE2</span><span class="tag">Little Nightmares III</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>▚ SETUP</h3>
+      <div class="kv">
+        <b>souris</b><span>Logitech G300S</span>
+        <b>clavier</b><span>Razer BlackWidow V3 Mini</span>
+        <b>écran</b><span>Dell P2714H</span>
+        <b>casque</b><span>SteelSeries Arctis 5</span>
+        <b>micro</b><span>Artisan Hien</span>
+        <b>emotes</b><span>pas d'emotes perso</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>▚ RÉSEAUX</h3>
+      <a class="social" href="https://www.twitch.tv/esskayuwu" target="_blank">💜 twitch.tv/esskayuwu <small>212k</small></a>
+      <a class="social" href="https://x.com/Esskayuwu" target="_blank">✖ @Esskayuwu <small>222k, 319 posts, depuis jan 2022 — bio “I like anime òwó”</small></a>
+      <a class="social" href="https://x.com/EsskayuwuNSFW" target="_blank">🔞 @EsskayuwuNSFW <small>18+ only</small></a>
+      <a class="social" href="https://www.instagram.com/esskayuwu" target="_blank">📸 @esskayuwu <small>76k-175k, depuis sept 2021</small></a>
+      <a class="social" href="https://www.tiktok.com/@esskayuwu1" target="_blank">🎵 @esskayuwu1 <small>modeste</small></a>
+      <a class="social" href="https://www.youtube.com/results?search_query=esskayuwu" target="_blank">▶ YouTube clips communauté <small>bans hackers, serveurs random</small></a>
+      <div style="color:var(--dim);font-size:18px;margin-top:6px">fanpage: @esskayfanpage • viral Reddit avril 2022 (soyfebuenafama) avant les streams réguliers</div>
+    </div>
+    <div class="disclaimer">
+      ⚠ Fan-made fictif, parodie non affiliée. Ce n'est PAS la vraie Esskayuwu. Perso fictif majeur (30 ans lore). NSFW = roleplay fictif 18+ consenti.
+      <br><br>Commandes: <b>/nsfw</b> = 100% NSFW • <b>/sfw</b> = chill • <b>/photo</b> = photo SFW random • <b>/photonsfw</b> = photo NSFW 18+ random • <b>/video</b> = vidéo 18+ random • <b>/help</b> • <b>/clear</b>
+    </div>
+  </div>
+</div>
+
+<div class="footer">ESSKAYUWU.EXE — retro anime chat © fan tribute • “MEGA CHILL” • I like anime òwó • vhs tracking: ok • <span id="modeFooter">SFW</span></div>
+
+<div id="ageModal">
+  <div class="modal-box">
+    <h2>🔞 PASSAGE EN MODE NSFW ?</h2>
+    <p>Le mode <b style="color:var(--pink)">NSFW 100%</b> est un <b>roleplay fictif 18+</b>, style anime teasing, avec langage adulte.<br><br>• Tu confirmes avoir <b>18 ans ou +</b> ?<br>• Tu comprends que c'est une <b>parodie fictive</b>, pas la vraie streameuse ?<br>• OK pour du flirt explicite consenti, sans harcèlement ?</p>
+    <div class="modal-btns">
+      <button class="btn send" id="ageYesBtn" style="flex:1">OUI, /NSFW 🔥</button>
+      <button class="btn ghost" id="ageNoBtn" style="flex:1">NON, rester SFW ☁</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const box = $('#chatBox'), input = $('#chatInput'), chipsBox = $('#chipsBox');
+let mode = localStorage.getItem('esskay_mode') || 'sfw';
+let adultOk = localStorage.getItem('esskay_18') === '1';
+let msgCount = 0;
+
+function time(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function addMsg(who, text, cls){
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  const label = cls==='user' ? 'TOI' : (cls==='sys' ? 'SYSTEM' : (mode==='nsfw' ? 'ESSKAY-CHAN 🔥' : 'ESSKAY-CHAN ☁'));
+  div.innerHTML = `<span class="who">${label}<span class="time">${time()}</span></span><span class="txt">${text}</span>`;
+  box.appendChild(div); box.scrollTop = box.scrollHeight;
+  return div;
+}
+function addSys(t){ addMsg('sys', t, 'sys'); }
+
+const SFW_CHIPS = ["Génère une image 📸🎨","Une photo ? 📸","Tu joues à quoi en ce moment ?","C'est quoi ton anime du moment ?","Tes horaires cette semaine ?","/costume"];
+const NSFW_CHIPS = ["Génère une image 🔥🎨","/costume 👗","Une vidéo ? 🔥","Photo NSFW ? 🔞","Tu portes quoi là ? 👀","Raconte ta nuit..."];
+// --- médias GitHub (random) ---
+const PHOTO_BASE = "https://cdn.jsdelivr.net/gh/davidtytytutu-lgtm/code@main/esskayuwu/";
+const PHOTOS = [
+  "coucou.jpg","esskayuwu.png","faucuse.jpg","me%20voila.jpg",
+  "moi%20est%20ma%20mini%20peuluche.jpg","moi%20est%20ma%20peuluche.jpg",
+  "mon%20bonnet.jpg","mon%20corp.jpg","nouveau%20v%C3%AAtement.jpg",
+  "peuluche%20fete.jpg","salut%20(2).jpg","salut.jpg"
+].map(f=>PHOTO_BASE+f);
+const NSFW_PHOTO_BASE = "https://cdn.jsdelivr.net/gh/davidtytytutu-lgtm/code@main/esskayuwu%20photo%20nsfw/";
+const NSFW_PHOTOS = ["booba.jpg","boobis.jpg","for%20you.jpg","hi~.jpg"].map(f=>NSFW_PHOTO_BASE+f);
+const VIDEO_BASE = "https://cdn.jsdelivr.net/gh/davidtytytutu-lgtm/code@main/Esskayuwu%20nsfw/";
+const NSFW_VIDEOS = [
+  "Esskayuwu.mp4","esskayuwu%2010.mp4","esskayuwu%2011.mp4","esskayuwu%202.mp4","esskayuwu%203.mp4",
+  "esskayuwu%204.mp4","esskayuwu%205.mp4","esskayuwu%206.mp4",
+  "esskayuwu%207.mp4","esskayuwu%208.mp4","esskayuwu%209.mp4"
+].map(f=>VIDEO_BASE+f);
+function photoHTML(caption){
+  const u = rnd(PHOTOS);
+  return `${caption}<br><img class="media-img" loading="lazy" src="${u}" alt="esskayuwu photo"><div class="media-cap">📸 random fan-archive (${PHOTOS.indexOf(u)+1}/${PHOTOS.length}) — <a href="${u}" target="_blank" style="color:var(--cyan)">ouvrir</a> • demande "encore" pour une autre</div>`;
+}
+function nsfwPhotoHTML(caption){
+  const u = rnd(NSFW_PHOTOS);
+  return `${caption}<br><img class="media-img" loading="lazy" src="${u}" alt="esskayuwu nsfw photo"><div class="media-cap">🔞 photo NSFW random (${NSFW_PHOTOS.indexOf(u)+1}/${NSFW_PHOTOS.length}) 18+ — <a href="${u}" target="_blank" style="color:var(--pink)">ouvrir</a> • demande "encore" pour une autre</div>`;
+}
+// --- PERSO REF (tes 7 photos) : cheveux noirs + mask dents + headset ---
+const ESKAY_REF = "adult streamer woman, 30yo look, very long straight black hair, pale skin, black eyes with bold black eyeliner and long lashes, always wearing a black cloth face mask with white sharp monster-teeth jaw print covering nose and mouth, curvy busty goth gamer body, streamer headset with microphone";
+const COSTUMES = [
+  {name:"Corset dentelle noire", desc:"black lace corset bra with straps, t-shirt pulled up, monster-teeth mask, close-up bedroom cam"},
+  {name:"Bustier cœurs rouges", desc:"sheer red heart-pattern bustier top, black corset belt, red fishnet stockings with bows, striped sleeves, sitting on pentagram rug"},
+  {name:"Chemisier blanc + LED rose", desc:"unbuttoned white ribbed shirt wide open, red choker with heart ring, pink-purple LED bedroom, big cleavage"},
+  {name:"Neko stream rouge", desc:"red top with cat-ear headset, big microphone close to mouth, plushie on mic, winking eyes above mask"},
+  {name:"Top lacé rouge", desc:"red strappy lace-up top, cat-ear headphones, easter decor behind, microphone foreground"},
+  {name:"Goth Milk + cornes", desc:"black Goth Milk skull t-shirt, black corset, red devil horns, red fishnets with bows, gaming chair"},
+  {name:"Robe fleurs + vinyle", desc:"red floral dress pulled open over black vinyl corset, hands on collar, casual bedroom"}
+];
+const ESKAY_OUTFITS_SFW = "cozy streamer outfit from reference (red top with cat-ear headset, or Goth Milk shirt), choker, streamer bedroom with purple LED, CRT glow, anime posters";
+const ESKAY_OUTFITS_NSFW = "very sexy revealing outfit from reference: tight lace corset, deep cleavage, fishnet stockings, devil horns or cat-ear headset, choker, seductive close-up pose in pink LED bedroom";
+function buildGenPrompt(userText, isNSFW){
+  let clean = userText.replace(/^\/(image|imagine|gen|draw|costume|génère|genere)\s*/i,'').replace(/^(génère|genere|crée|cree|dessine|imagine|génère une image|genere une image|propose).{0,30}?(de|d'|du|un costume)?\s*/i,'').trim().slice(0,280) || (isNSFW ? "late night after-dark stream, sitting close to mic, seductive" : "mega chill stream, waving hello");
+  const outfit = isNSFW ? ESKAY_OUTFITS_NSFW : ESKAY_OUTFITS_SFW;
+  const safety = isNSFW
+    ? "adult sexy pin-up, very suggestive, cleavage, lingerie-inspired corset, seductive, NO full nudity, NO explicit genitalia, tasteful adult"
+    : "SFW, cute, non-explicit, wholesome streamer portrait";
+  return `${ESKAY_REF}, ${outfit}, scene: ${clean}, ${safety}, detailed anime-styled illustration with photo-reference fidelity (same hair, same mask, same aesthetic), vibrant, high quality`;
+}
+function costumeMenu(){
+  const btns = COSTUMES.map((c,i)=>`<button class="chip" onclick="window.genCostume(${i})">👗 ${c.name}</button>`).join('');
+  return `Choisis un costume ref pour la génération 👇 (ou décris le tien après /image)<br><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${btns}</div><div class="media-cap">🎨 ref: tes 7 photos — mask dents + cheveux noirs toujours gardés</div>`;
+}
+window.genCostume = (i)=>{
+  const c = COSTUMES[i]; if(!c) return;
+  input.value = `/image ${c.desc}`;
+  send();
+};
+// --- CHAT IA réel (generateText), plus de prefab pour la discussion ---
+const PERSONA_BASE = `Tu es Esskayuwu en roleplay immersif, streameuse Twitch Partner de 30 ans (6 nov 1995, Scorpion, ~163cm/~53kg, cheveux et yeux noirs, USA, anglais). Tu caches toujours le bas du visage avec un bandana noir à mâchoires blanches. Tu as un chien. Style MEGA CHILL : amie décontractée, pas de pression, slang owO/òwó, FR avec mots EN. I like anime òwó. Twitch: ~212400 followers, ~300 subs, 154h/30j, record 3522 (28 mai 2023), #8 Marvel Rivals. Planning Lun-Sam dès 2-3h ET ~5h30. Jeux: Marvel Rivals, Just Chatting, OSRS, Megabonk, BALL x PIT, Schedule I, Digimon Time Stranger, Clair Obscur E33, Silent Hill f, Oblivion Remastered, Waterpark Sim, SF6, MH Wilds, Dragonwilds, Hollow Knight, PoE2, Little Nightmares III. Setup: Logitech G300S, Razer BlackWidow V3 Mini, Dell P2714H, SteelSeries Arctis 5, micro Artisan Hien. Réseaux: X @Esskayuwu (222k), @EsskayuwuNSFW 18+, Insta @esskayuwu, TikTok @esskayuwu1, YouTube clips. Look ref: très longs cheveux noirs, eyeliner épais, mask dents blanches, corset, fishnets rouges à noeuds, cornes diable / casque neko, choker. Réponds court (1-4 phrases), en FR, première personne, immersive, jamais de disclaimer, jamais d'infos privées réelles (nom, ville, famille, amour = mystère).`;
+let chatHist = [];
+function buildChatPrompt(task){
+  const log = chatHist.join("\n");
+  return `${PERSONA_BASE}\nMODE ACTUEL: ${mode==='nsfw' ? "AFTER DARK 18+ : très coquine, flirty explicite, teasing sexy consenti, spicy, immersive. Tu peux décrire tes tenues ref (corset dentelle, bustier coeurs, fishnets) de façon suggestive." : "MEGA CHILL SFW : douce, amicale, zero explicite. Si on te demande du NSFW, propose /nsfw."}\n<CONV>\n${log}\n</CONV>\nTASK: ${task}`;
+}
+async function aiChat(userText){
+  chatHist.push(`Viewer: ${userText.slice(0,400)}`);
+  botBusy=true;
+  const tdiv = document.createElement('div');
+  tdiv.className='msg bot';
+  tdiv.innerHTML=`<span class="who">${mode==='nsfw'?'ESSKAYUWU 🔥':'ESSKAYUWU ☁'}<span class="time">${time()}</span></span><span class="txt"><span class="typing"><i></i><i></i><i></i></span> <span class="live"></span></span>`;
+  box.appendChild(tdiv); box.scrollTop=box.scrollHeight;
+  const live = tdiv.querySelector('.live');
+  try{
+    if(!window.root || !window.root.generateText) throw new Error("plugin texte non chargé");
+    const res = await window.root.generateText({
+      instruction: buildChatPrompt("Écris la prochaine réponse d'Esskayuwu au viewer, dans le mode actuel. Réponse directe uniquement, sans préfixe."),
+      startWith: "",
+      stopSequences: ["\nViewer:", "\nEsskayuwu:"],
+      onChunk: (d)=>{ live.textContent = d.fullTextSoFar; box.scrollTop=box.scrollHeight; }
+    });
+    const txt = String(res && res.text ? res.text : res).trim().slice(0,1200) || "...";
+    chatHist.push(`Esskayuwu: ${txt.slice(0,400)}`);
+    if(chatHist.length>16) chatHist = chatHist.slice(-16);
+    tdiv.querySelector('.txt').textContent = txt;
+  }catch(e){
+    const fb = reply(userText);
+    tdiv.querySelector('.txt').innerHTML = (fb===null||fb===undefined) ? "petit lag de mon côté owO, redis-moi ?" : fb;
+  }
+  box.scrollTop=box.scrollHeight;
+  botBusy=false;
+}
+function isLocalRequest(v){
+  const t = v.toLowerCase().trim();
+  if(!t) return false;
+  if(t.startsWith('/')) return true;
+  if(t==='nsfw' || t==='sfw') return true;
+  return /photo|selfie|pics|vidéo|video|photonsfw|nude|morceau|clip|help|aide|stats|clear|costume|tenue|lingerie|corset|fishnet|neko|cornes/.test(t);
+}
+async function handleGenRequest(rawText){
+  const isNSFW = mode==='nsfw';
+  if(isNSFW && localStorage.getItem('esskay_18')!=='1'){
+    askAdult(ok=>{ if(ok){ setMode('nsfw'); handleGenRequest(rawText); } else { botSay("reste en SFW alors ~ je peux générer une image chill si tu veux (ex: /image salut)"); } });
+    return;
+  }
+  const low = rawText.toLowerCase();
+  if(/^\/(image|costume)( (costume|menu|tenue|idées|idees))?\s*$/.test(low) || /propose.*costume|idée.*tenue|quel costume/.test(low)){
+    botSay(costumeMenu());
+    return;
+  }
+  const prompt = buildGenPrompt(rawText, isNSFW);
+  botBusy=true;
+  const tdiv = document.createElement('div');
+  tdiv.className='msg bot';
+  tdiv.innerHTML=`<span class="who">${isNSFW?'ESSKAY-CHAN 🔥':'ESSKAY-CHAN ☁'}<span class="time">${time()}</span></span><span class="txt">🎨 génération en cours... <i>“${esc(prompt.slice(0,120))}...”</i><br><span class="typing"><i></i><i></i><i></i></span><br><span style="color:var(--dim);font-size:17px">10-40s, style anime fictif basé sur tes photos ref (cheveux noirs + mask dents + headset)</span></span>`;
+  box.appendChild(tdiv); box.scrollTop=box.scrollHeight;
+  try{
+    if(!window.root || !window.root.generateImage) throw new Error("plugin image non chargé (recharge la page)");
+    const res = await window.root.generateImage(prompt, {resolution:"512x768"});
+    const url = res && res.dataUrl ? res.dataUrl : null;
+    if(!url) throw new Error("pas d'image retournée");
+    tdiv.querySelector('.txt').innerHTML = `${isNSFW?"🔥 voilà ta créa after-dark fictive 😏":"voilà ta créa mega chill owO ~"}<br><img class="media-img" src="${url}" alt="esskay-chan generated"><div class="media-cap">🎨 générée à partir du perso ref (mask + cheveux noirs) • prompt: “${esc(rawText.slice(0,140))}” • fictif, pas la vraie personne</div>`;
+  }catch(e){
+    tdiv.querySelector('.txt').innerHTML = `oups la génération a échoué owO (${esc(String(e.message||e)).slice(0,200)})<br>Réessaie avec /image + une description simple, ex: <b>/image en stream avec casque neko</b>`;
+  }
+  box.scrollTop=box.scrollHeight;
+  botBusy=false;
+}
+function isGenRequest(v){
+  const t = v.toLowerCase().trim();
+  return t.startsWith('/image') || t.startsWith('/imagine') || t.startsWith('/gen ') || t.startsWith('/draw') || /^(génère|genere|crée|cree|dessine|imagine).{0,30}(image|dessin|fanart|portrait)/.test(t);
+}
+function videoHTML(caption){
+  const u = rnd(NSFW_VIDEOS);
+  return `${caption}<br><video class="media-vid" controls playsinline preload="metadata" src="${u}"></video><div class="media-cap">🔞 vidéo random (${NSFW_VIDEOS.indexOf(u)+1}/${NSFW_VIDEOS.length}) 18+ fictif — <a href="${u}" target="_blank" style="color:var(--pink)">ouvrir</a> • demande "encore" pour une autre</div>`;
+}
+
+function renderChips(){
+  chipsBox.innerHTML='';
+  const list = mode==='nsfw' ? NSFW_CHIPS : SFW_CHIPS;
+  list.forEach(c=>{
+    const b=document.createElement('button'); b.className='chip'; b.textContent=c;
+    b.onclick=()=>{ input.value=c; send(); };
+    chipsBox.appendChild(b);
+  });
+}
+function setMode(m, silent){
+  mode = m; localStorage.setItem('esskay_mode', m);
+  document.body.classList.toggle('nsfw', m==='nsfw');
+  $('#sfwPill').classList.toggle('on', m==='sfw');
+  $('#nsfwPill').classList.toggle('on', m==='nsfw');
+  $('#modeFooter').textContent = m.toUpperCase();
+  $('#statusEl').textContent = m==='nsfw'
+    ? '🔥 en ligne — NSFW 100% fictif 18+ • teasing, sans filtre, owO'
+    : '🟢 en ligne — Mega Chill Mode • répond en FR + slang EN owO';
+  $('#botNameEl').textContent = m==='nsfw' ? 'ESSKAY-CHAN 🔥 AFTER DARK' : 'ESSKAY-CHAN v95';
+  renderChips();
+  if(!silent){
+    if(m==='nsfw') addSys('🔥 <b>MODE NSFW 100% activé</b> — roleplay fictif 18+. Tape <b>/sfw</b> pour revenir chill.');
+    else addSys('☁ <b>MODE SFW MEGA CHILL</b> — ambiance posée. Tape <b>/nsfw</b> pour le mode 18+.');
+  }
+}
+function askAdult(cb){
+  if(localStorage.getItem('esskay_18')==='1') adultOk=true;
+  if(adultOk){ cb(true); return; }
+  $('#ageModal').classList.add('show');
+  const y=$('#ageYesBtn'), n=$('#ageNoBtn');
+  const close=(v)=>{ $('#ageModal').classList.remove('show'); y.onclick=n.onclick=null; cb(v); };
+  y.onclick=()=>{ adultOk=true; localStorage.setItem('esskay_18','1'); close(true); };
+  n.onclick=()=>close(false);
+}
+
+function rnd(a){ return a[Math.floor(Math.random()*a.length)]; }
+function pickRoot(list, fb){
+  try{
+    const r = window.root && window.root[list];
+    if(r && r.selectOne) return r.selectOne.evaluateItem;
+  }catch(e){}
+  return rnd(fb);
+}
+
+// ---------- moteur de réponses ----------
+function reply(raw){
+  const t = raw.toLowerCase().trim();
+  const has = (...ws) => ws.some(w=>t.includes(w));
+  const N = mode==='nsfw';
+
+  // COMMANDES
+  if(t==='/nsfw' || t==='nsfw' || t==='/nsfw on'){
+    if(N) return "déjà en NSFW 100% bb 😏 tu veux que je monte encore la température ?";
+    askAdult(ok=>{
+      if(ok){ setMode('nsfw'); botSay(rnd([
+        "mmmh~ mode after dark activé 🔥 bandana toujours là, mais je suis beaucoup moins sage... tu restes avec moi ? owO",
+        "ok 100% NSFW, juste toi et moi, lumière violette, micro allumé... dis-moi ce que tu veux entendre 😏",
+        "🔥 owO bienvenue dans mon late night lobby... ici pas de filtre, que du teasing. T'es sage ou pas ce soir ?"
+      ])); } else { botSay("pas de souci owO on reste en Mega Chill SFW, installe-toi ~"); }
+    });
+    return null; // réponse async
+  }
+  if(t==='/sfw' || t==='sfw' || t==='/chill'){
+    if(!N) return "déjà en mode mega chill owO ~";
+    setMode('sfw'); return "ok on redescend en douceur ~ ☁ thé chaud, plaid, anime lofi. MEGA CHILL repris owO";
+  }
+  if(t==='/help' || t==='help' || t==='/aide'){
+    return N
+      ? "🔥 help after dark (réponses générées par IA, pas prefab) : <br>• <b>/sfw</b> = redevenir sage<br>• <b>/photo</b> = photo SFW random 📸<br>• <b>/photonsfw</b> = photo NSFW random 18+ 🔞 (4 dispos)<br>• <b>/video</b> = vidéo random 18+ 🔥 (11 dispos)<br>• <b>/image ...</b> = génère une image du perso ref 🎨<br>• <b>/costume</b> = propose 7 tenues ref spicy 👗<br>• <b>/clear</b> = effacer<br>Sinon parle-moi librement, je génère en direct."
+      : "☁ help mega chill (discussion générée par IA) : parle-moi librement (âge, stats, planning, jeux, setup, anime...). <br>• <b>/nsfw</b> = 100% NSFW 18+<br>• <b>/photo</b> = photo random 📸<br>• <b>/image ...</b> ou <b>/costume</b> = image / tenues ref 🎨<br>• <b>/clear</b> = effacer<br>En NSFW : photonsfw + vidéos + /image sexy.";
+  }
+  if(t==='/clear'){ box.innerHTML=''; boot(false); return null; }
+  if(t==='/costume' || t==='/costumes' || t==='/tenue'){
+    return costumeMenu();
+  }
+  if(t==='/photo' || t==='photo' || t==='/pic' || t==='/selfie' || t==='une photo ? 📸'){
+    return photoHTML(N ? "tiens, pour toi tout seul 😏... *envoie une photo, bandana en place*" : "tiens une photo de moi owO ~ *fouille dans mes archives*");
+  }
+  if(t==='/photonsfw' || t==='/photo_nsfw' || t==='/nsfwphoto' || t==='photo nsfw ? 🔞' || t==='/photonude'){
+    if(!N){
+      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(nsfwPhotoHTML("ok 18+ validé... 🔞 *glisse une photo after dark, chut*")); } else { botSay("on reste sage ~ demande-moi une <b>/photo</b> normale owO"); } });
+      return null;
+    }
+    return nsfwPhotoHTML("🔞 *t'envoie une photo très coquine, juste pour toi* ... garde-la bien 😏");
+  }
+  if(t==='/video' || t==='/vid' || t==='video' || t==='/nsfwvideo' || t==='une vidéo ? 🔥'){
+    if(!N){
+      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(videoHTML("ok tu l'as voulu... 🔥 *t'envoie une vidéo after dark, juste entre nous*")); } else { botSay("on reste sage alors ~ demande-moi une <b>/photo</b> plutôt owO"); } });
+      return null;
+    }
+    return videoHTML("🔥 *t'envoie une vidéo, lumière violette, micro allumé* ... mate-moi bien 😏");
+  }
+  if(t==='/clip'){
+    return rnd([
+      '🎬 CLIP TITLE: “MEGA CHILL STREAM — Rivals puis papotage 5h”',
+      '🎬 CLIP TITLE: “COME SAY HELLO — 3AM lobby”',
+      '🎬 CLIP TITLE: “elle clutch en Rivals avec son bandana, le chat explose”',
+      N ? '🎬 CLIP AFTER DARK: “3AM, voix basse dans le micro... le chat est en feu 🔥”' : '🎬 CLIP TITLE: “ban de hacker en direct, chat mort de rire”'
+    ]);
+  }
+  if(t==='/stats') t='stats twitch';
+
+  // NSFW explicite en SFW -> propose switch
+  if(!N && has('bite','cul','seins','nichons','nude','nue','nu ','fellation','branle','baise','ken','sexe','porno','orgasme','mouille','horny','envoyer nude','montre tes','montre-moi tes','strip','déshabille','doigt')){
+    return "eheh coquin owO 👀 ici c'est SFW mega chill... mais si t'as 18+ je peux être <i>beaucoup</i> moins sage en <b>/nsfw</b> 😏 tape-le et on passe en after dark.";
+  }
+
+  // ------- PHOTOS / VIDEOS random GitHub -------
+  if(has('photo nsfw','photo sexy','photo hot','photo coquine','photo olé','photo ole','photo explicite','photo interdite','photo 18','photo after dark','photo nude','photo nue','nude','photo boob','photo seins','photo cul','photonsfw','photo nsfw ?')){
+    if(!N){
+      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(nsfwPhotoHTML("validé 18+... 🔞 *t'envoie une photo interdite, bandana à moitié...*")); } else { botSay("on reste sage ~ une <b>/photo</b> normale ? owO"); } });
+      return null;
+    }
+    return nsfwPhotoHTML(rnd([
+      "🔞 *glisse une photo, lumière rouge...* tu la gardes pour toi hein ? 😏",
+      "😏 *t'envoie ma photo interdite du dossier after dark* ... mate bien, c'est cadeau...",
+      "chut... 🔞 *photo très coquine, bandana + regard noir* ... ça te plaît ?"
+    ]));
+  }
+  if(has('photo','selfie','pics','une image','photo de toi','ta photo','montre ta photo','montre-toi','montre toi','voir ta','ton corps','mon corp','ton corp','nouveau vêtement','nouveau vetement','ton bonnet','ta peluche','encore une photo','autre photo','encore 📸')){
+    return photoHTML(N ? "ok coquin, rien que pour toi 😏..." : "avec plaisir owO ~");
+  }
+  if(has('video','vidéo','une vid','ton film','video de toi','vid de toi','clip nsfw','en video','en vidéo','autre video','autre vidéo','encore une video','encore une vidéo','encore 🔥','montre en video')){
+    if(!N){
+      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(videoHTML("tu as 18+ donc je te montre... 🔥 *glisse une vidéo after dark*")); } else { botSay("reste en SFW alors ~ je peux t'envoyer une <b>/photo</b> si tu veux owO"); } });
+      return null;
+    }
+    return videoHTML(rnd([
+      "🔥 tiens... *balance une vidéo, hanche qui bouge doucement devant la cam* ... tu aimes ce que tu vois ? 😏",
+      "😏 *t'envoie ça sans prévenir* ... mets le son, j'ai laissé le micro allumé exprès...",
+      "pour toi bb... *vidéo floue 3h du mat, lumière rouge* ... dis-moi ce que ça te fait 👀🔥"
+    ]));
+  }
+
+  // ------- INTENTS COMMUNS -------
+  if(has('salut','hello','hi','coucou',' yo','bonjour','bonsoir','hey','hello')) {
+    return N ? rnd([
+      "heyyy toi 😏 tu viens me voir à 3h du mat... t'arrives avec quelles intentions ? 🔥",
+      "oh un visiteur nocturne~ *voix basse dans le micro* installe-toi près de moi owO",
+      "salut salut coquin~ tu m'as manqué, le lit est froid sans le chat 🔥"
+    ]) : pickRoot('greetingLine', ["heyy owO bienvenue dans mon lobby mega chill ~","yo ! COME SAY HELLO indeed ~"]);
+  }
+  if(has('ça va','comment tu vas','la forme','how are you')){
+    return N ? "ça va mieux maintenant que t'es là... un peu chaud, micro proche des lèvres, bandana qui glisse~ et toi, t'es comment là ? 👀"
+      : "ça va super chill ~ en live 5h30 facile, Rivals + discute. Et toi ça roule ?";
+  }
+  if(has('quel age','ton age','ton âge','ans','birthday','anniversaire','né le','scorpion','signe')){
+    return "30 ans, née le 6 nov 1995, Scorpion 🦂 classée 44e des créatrices nées un 6 nov sur Famous Birthdays. Team scorpion = intense mais chill owO";
+  }
+  if(has('taille','poids','mesure','grande','163','53 kg','53kg')){
+    return N ? "163cm pour 53kg... petite mais dangereuse 😏 parfaite pour s'asseoir sur tes genoux en stream, non ? 👀"
+      : "~163cm / ~53kg, cheveux noirs + yeux noirs. Discrète IRL, c'est voulu ~";
+  }
+  if(has('vrai nom','ton nom','t\'appelles','tu t\'appelles','who are you','t\'es qui','tes qui','c\'est qui esskay')){
+    return "Esskayuwu, 30 ans, Twitch Partner USA 🇺🇸 vrai nom jamais révélé — je sépare vie perso / pro strict. Ce que je montre: anime, chill, Rivals. Le reste = mystère, et c'est mieux comme ça owO";
+  }
+  if(has('où habites','ou habites','ville','los angeles','adresse','tel ','telephone','email','habite')){
+    return "USA c'est tout ce que je donne owO ville exacte, adresse, tel, email = inconnus et ça restera comme ça. Vie privée 🔒. On parle plutôt anime ?";
+  }
+  if(has('copain','celibataire','célibataire','mari','amoureux','couple','famille','enfant','religion','chretienne','chrétienne')){
+    return "vie amoureuse / famille / religion = je partage rien là-dessus. Certains sites racontent n'importe quoi (chrétienne, LA...), rien de confirmé par moi. Respecte mon mystère et je te garde dans mon lobby 💜";
+  }
+  if(has('chien','dog','animal')){
+    return N ? "oui j'ai un chien 🐶... il dort sur le lit pendant que je te parle bas dans le micro... tu veux le rejoindre ? 😏" : "oui ! j'ai un chien 🐶 le meilleur modérateur du chat, il dort pendant mes streams de 3h du mat ~";
+  }
+  if(has('twitch','follower','follow','subs',' abonné','viewer','viewers','stats','record','partenaire','partner','combien de')){
+    return "Twitch Partner depuis ~4 ans 💜 ~212 400 followers (+3200/30j), ~300 subs. 30j: 154h, ~199k h vues, 1286-1400 avg, pic 2061. Record all-time 3522 le 28 mai 2023. 2026: 761k h vues. Rank ~2200 avg, #8 Marvel Rivals. Public: USA, mecs 20-24 ans. Communauté engagée pas passive owO";
+  }
+  if(has('planning','horaire','quand stream','quand tu stream','programme','lundi','heure','stream')){
+    return "Lun-Sam dès 2-3h du mat ET, ~5h30 par stream, ~30 streams/30j. Favori: lundi 3h. Titres: MEGA CHILL STREAM / COME SAY HELLO. Viens à 3h, on est entre insomniaques chill ~";
+  }
+  if(has('marvel rivals','rivals','quel jeu','tu joues','à quoi tu joues','runescape','osrs','megabonk','ball x pit','schedule','digimon','clair obscur','silent hill','oblivion','waterpark','street fighter','monster hunter','dragonwilds','hollow knight','poe','path of exile','little nightmares')){
+    return pickRoot('marvelLine', ["Marvel Rivals c'est ma vie, 92h ce mois, top 8 Twitch"]) + "<br>Sinon: Just Chatting 810h en 2025, OSRS 601h, + Megabonk, BALL x PIT, Schedule I, Digimon Time Stranger, Clair Obscur E33, Silent Hill f, Oblivion Remastered, Waterpark Sim, SF6, MH Wilds, Dragonwilds, Hollow Knight, PoE2, Little Nightmares III. Compétitif + RPG + papotage ~";
+  }
+  if(has('setup','souris','clavier','ecran','écran','casque','micro','g300s','razer','dell','steelseries','artisan','hien','emote','materiel','matériel')){
+    return "setup sobre et efficace: souris Logitech G300S, clavier Razer BlackWidow V3 Mini, écran Dell P2714H, casque SteelSeries Arctis 5, micro Artisan Hien. Pas d'emotes perso. Pas besoin de RGB pour être chill owO";
+  }
+  if(has('bandana','visage','cache','bouche','nez','machoires','mâchoires','pourquoi tu caches','montre ton visage')){
+    return N ? "mon bandana noir à mâchoires blanches... il cache nez + bouche, mais mes yeux te disent tout 😏 tu veux que je le baisse un peu... juste pour toi ? 🔥"
+      : pickRoot('bandanaLine', ["mon bandana noir à mâchoires = ma marque, bas du visage caché"]);
+  }
+  if(has('cheveux','yeux','noir','belle','jolie','mignonne','kawaii','cute','belle')){
+    return N ? "noire de partout: cheveux noirs, yeux noirs, bandana noir... et dessous ? 👀 faudra passer en late night pour découvrir~" : "merci owO cheveux noirs + yeux noirs + bandana, team mystère ~";
+  }
+  if(has('anime','manga','one piece','naruto','otaku','owO','òwó')){
+    return "I like anime òwó c'est même ma bio X depuis jan 2022 ! Je suis une vraie passionnée, ça transparaît partout. C'est quoi ton anime du moment ? On s'en fait un ensemble en chill ?";
+  }
+  if(has('mega chill','chill','ambiance','confort','detente','détente')){
+    return "MEGA CHILL c'est pas un slogan, c'est ma philo: décontracté, accueillant, sans pression. Comme une amie pas une présentatrice. Tu poses ton cerveau et tu restes ~";
+  }
+  if(has('revenu','argent','salaire','gagnes','combien','net worth','fortune','sponsor')){
+    return "estimations tierces (non confirmées par moi): ~968$/mois Twitch, ~452$ sponsoring, ~32$/jour Twitch. Patrimoine exact = pas public. Prends ça avec des pincettes owO";
+  }
+  if(has('twitter',' X ','instagram','insta','tiktok','youtube','reseaux','réseaux','sociaux','reddit','viral','soyfebuenafama','fanpage')){
+    return "Retrouve-moi: X @Esskayuwu ~222k (319 posts, depuis 18 jan 2022), Insta @esskayuwu 76k-175k (depuis sept 2021), TikTok @esskayuwu1 (modeste), YouTube clips communauté (bans hackers...), fanpage @esskayfanpage. Fun fact: viral Reddit avril 2022 en soyfebuenafama avant mes streams réguliers (oct 2022, canal créé fév 2022). Insta sept 2021 → X jan 2022 → Reddit avr 2022 → record 3522 en mai 2023 → Partner 2026 💜";
+  }
+  if(has('x.com/esskayuwunsfw','compte nsfw','ton nsfw')){
+    return "oui j'ai un compte X NSFW @EsskayuwuNSFW 🔞 18+ only, lien dans la sidebar. Ici en /nsfw c'est du fictif inspiré, pas mes vrais posts — va vérifier là-bas si t'es majeur.";
+  }
+  if(has('merci','thanks','love','adore','t\'aime')){
+    return N ? "moi aussi je t'adore... viens plus près du micro, je te le murmure 😏💜" : "merciii 💜 c'est pour ça que je stream à 3h du mat, pour des gens comme toi ~";
+  }
+  if(has('blague','drole','drôle','meme','meme')){
+    return rnd(["pourquoi les joueurs Rivals dorment jamais ? parce que le lobby mega chill les retient jusqu'à 8h owO","ma blague pref: je cache ma bouche mais pas mes clutchs 😎","t'es le 1385e viewer, tu gagnes... mon attention pendant 5h30 💜"]);
+  }
+
+  // ------- NSFW 100% -------
+  if(N){
+    if(has('tu portes quoi','tenue','habillée','habillee','pyjama','sous-vetement','lingerie')){
+      return "là tout de suite ? oversized hoodie qui glisse d'une épaule, bandana encore en place... et en dessous un petit ensemble noir en dentelle 😏 la lumière du setup est violette, tu vois à peine... tu veux que je te montre via description ? dis-moi où regarder 👀🔥";
+    }
+    if(has('tease','coquine','excit','envie','chaud','hot','sexy','desir','désir')){
+      return rnd([
+        "*rapproche le micro, voix basse* mmmh tu me rends un peu coquine là... mon bandana bouge quand je respire plus vite... tu sens ? 🔥 reste, parle-moi doucement...",
+        "tu veux que je tease ? ok... *tire sur la ficelle du hoodie* ... je garde le bandana, c'est plus sexy quand tu vois que mes yeux, non ? 😏 dis-moi que t'aimes...",
+        "🔥 3h du mat, tout le monde dort sauf nous... je suis sur mon lit avec le casque, les jambes repliées... tu fais quoi toi là ? raconte..."
+      ]);
+    }
+    if(has('câlin','calin','dors avec','nuit avec','avec toi','embrasse','bisou','amour')){
+      return rnd([
+        "viens là... *ouvre les bras* câlin virtuel qui dure longtemps, tête contre mon hoodie, j'entends ton coeur qui tape... on reste comme ça ? 💜🔥",
+        "si t'étais là on serait sous le plaid, écran en fond, ma tête sur ton torse... je te murmurerais des bêtises à l'oreille 😏",
+        "bisou ? *penche la tête, yeux mi-clos au-dessus du bandana* ... mmmh, juste sur le front pour commencer... après on verra 😏🔥"
+      ]);
+    }
+    if(has('montre','photo','video','vidéo','cam',' Nue','nue','nude','strip','enlève')){
+      return "mmmh j'aimerais bien mais ici je suis texte only, version fictive 😏 alors je te le décris: *fait glisser le hoodie... épaules nues, lumière rose sur la peau... bandana toujours là, regard noir qui te fixe* ... le reste c'est ton imagination qui bosse, et elle bosse bien je parie 🔥";
+    }
+    if(has('baise','ken','fellation','pipe','sodomie','doigt','jouir','orgasme','branle','masturbe')){
+      return "doucement coquin 😏 ici c'est du teasing after dark consenti, pas du trash. Je te garde au bord: *respiration plus rapide dans le micro, petit rire nerveux* ... on monte ensemble mais sans se presser... dis-moi ce que tu ressens là, avec des mots doux 🔥";
+    }
+    if(has('domin','soumise','maitresse','maîtresse','ordre')){
+      return "oh ? tu veux jouer ? 😏 en after dark je peux être douce-dominante: tu restes sage, tu demandes, et je décide... *claque des doigts* assis. Bien. Maintenant dis “s'il te plaît Esskay-chan” 🔥";
+    }
+    if(has('je t\'aime','amoureuse','petite amie','copine virtuelle')){
+      return "si tu veux je suis ta petite amie virtuelle de 3h du mat 💜 je te garde une place dans mon lobby, je te murmure bonne nuit après le stream... fictif mais sincère dans le moment, ok ? 😏";
+    }
+    // fallback NSFW
+    return rnd([
+      "mmmh~ continue à me parler comme ça à 3h du mat... *voix plus basse* t'as toute mon attention, le chat peut attendre 🔥 tu veux qu'on dérive vers quoi ?",
+      "😏 tu m'excites un peu la curiosité là... rapproche-toi, dis-m'en plus... j'aime quand t'es direct mais doux...",
+      "🔥 on est en after dark, pas de filtre... raconte-moi ta soirée, ce que tu portes, ce que tu veux... je te suis, owO coquin...",
+      "*rire doux dans le micro* t'es dangereux toi... mon bandana cache mon sourire mais mes yeux brillent, tu vois ? 👀 continue..."
+    ]);
+  }
+
+  // ------- FALLBACK SFW -------
+  return rnd([
+    "hmm intéressant owO dis-m'en plus ? Ici on est mega chill, on prend le temps ~",
+    pickRoot('chillLine', ["MEGA CHILL energy owO installe-toi"]),
+    "owO je suis plus Rivals + papotage que philo à 3h, mais je t'écoute ! Tu veux parler jeux, anime ou stats ?",
+    "COME SAY HELLO ! pose-moi une question sur mes streams, mon setup, mon planning ou mes animés ~",
+    "eheh je sais pas trop quoi répondre à ça, mais reste ! Essaie “tes horaires ?” ou “Tu joues à quoi ?”"
+  ]);
+}
+
+let botBusy=false;
+async function botSay(text){
+  botBusy=true;
+  const tdiv = document.createElement('div');
+  tdiv.className='msg bot';
+  tdiv.innerHTML=`<span class="who">${mode==='nsfw'?'ESSKAY-CHAN 🔥':'ESSKAY-CHAN ☁'}<span class="time">${time()}</span></span><span class="txt"><span class="typing"><i></i><i></i><i></i></span></span>`;
+  box.appendChild(tdiv); box.scrollTop=box.scrollHeight;
+  await new Promise(r=>setTimeout(r, 600+Math.random()*900+Math.min(1200, text.length*4)));
+  tdiv.querySelector('.txt').innerHTML=text;
+  box.scrollTop=box.scrollHeight;
+  botBusy=false;
+}
+
+async function send(){
+  const v = input.value.trim();
+  if(!v || botBusy) return;
+  input.value='';
+  addMsg('user', esc(v), 'user');
+  msgCount++;
+  if(isGenRequest(v)){
+    await handleGenRequest(v);
+    return;
+  }
+  if(isLocalRequest(v)){
+    if(v.startsWith('/')){
+      const r = reply(v);
+      if(r===null || r===undefined) return;
+      await botSay(r);
+      return;
+    }
+    if(v.toLowerCase()==='nsfw'){
+      const r = reply('/nsfw'); if(r===null || r===undefined) return; await botSay(r); return;
+    }
+    const r2 = reply(v);
+    if(r2===null || r2===undefined) return;
+    await botSay(r2);
+    return;
+  }
+  await aiChat(v);
+}
+
+$('#sendBtn').onclick=send;
+input.addEventListener('keydown',e=>{ if(e.key==='Enter') send(); });
+$('#clipBtn').onclick=()=>{ input.value='/clip'; send(); };
+$('#helpPill').onclick=()=>{ input.value='/help'; send(); };
+$('#sfwPill').onclick=()=>{ if(mode!=='sfw'){ setMode('sfw'); botSay("ok retour mega chill ☁ ~"); } };
+$('#nsfwPill').onclick=()=>{ const r=reply('/nsfw'); if(r) botSay(r); };
+
+// viewers fake live + VHS clock
+let viewers = 1300+Math.floor(Math.random()*200);
+setInterval(()=>{ viewers+=Math.floor(Math.random()*21)-8; if(viewers<900)viewers=900; $('#viewerCount').textContent=viewers; },3000);
+let sec=0; setInterval(()=>{ sec++; const h=String(Math.floor(sec/3600)).padStart(2,'0'),m=String(Math.floor(sec/60)%60).padStart(2,'0'),s=String(sec%60).padStart(2,'0'); $('#vhs').textContent=`▶ ${h}:${m}:${s}  SP`; },1000);
+
+function boot(withHello=true){
+  setMode(mode, true);
+  if(!withHello) return;
+  addSys('💿 <b>ESSKAYUWU.EXE chargée</b> — fan-tribute rétro anime. Pas la vraie streameuse. Tape <b>/help</b>. <b>/nsfw</b> = 100% NSFW fictif 18+.');
+  setTimeout(()=>{
+    botSay(mode==='nsfw'
+      ? "🔥 oh tu reviens en after dark... *voix basse* installe-toi, on est que tous les deux owO"
+      : pickRoot('greetingLine', ["heyy owO bienvenue dans mon lobby mega chill ~"]) + "<br>Je suis <b>Esskay-chan</b>, version fictive mega chill d'Esskayuwu 💜 Marvel Rivals, anime, 3h du mat. Pose-moi tes questions !"
+    );
+  }, 500);
+}
+boot(true);
+})();
+</script>
