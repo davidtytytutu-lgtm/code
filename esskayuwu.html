@@ -127,7 +127,7 @@ body.nsfw .media-img{border-color:var(--pink)}
 <div class="layout">
   <div class="chat-shell">
     <div class="chat-head">
-      <img class="avatar" src="https://cdn.jsdelivr.net/gh/davidtytytutu-lgtm/code@main/esskayuwu/mon%20corp.jpg" alt="esskay photo">
+      <img class="avatar" src="https://cdn.jsdelivr.net/gh/davidtytytutu-lgtm/code@main/esskayuwu/coucou.jpg" alt="esskay photo">
       <div class="head-info">
         <p class="head-name glitch" data-t="ESSKAY-CHAN v95" id="botNameEl">ESSKAY-CHAN v95</p>
         <div class="head-sub" id="statusEl">🟢 en ligne — Mega Chill Mode • répond en FR + slang EN owO</div>
@@ -150,11 +150,11 @@ body.nsfw .media-img{border-color:var(--pink)}
 
   <div class="sidebar">
     <div class="card">
-      <h3>▚ PROFILE // ESSKAYUWU (fan-lore)</h3>
+      <h3>▚ PROFILE // ESSKAYUWU </h3>
       <div class="kv">
         <b>âge</b><span>30 ans — 6 nov 1995, Scorpion</span>
         <b>taille</b><span>~163 cm / ~53 kg, cheveux + yeux noirs</span>
-        <b>pays</b><span>USA, anglais, vrai nom inconnu (vie privée 🔒)</span>
+        <b>pays</b><span>USA, anglais, vrai esskayuwu</span>
         <b>pet</b><span>🐶 un chien</span>
         <b>style</b><span>🎧 MEGA CHILL, amie pas présentatrice</span>
         <b>marque</b><span>bandana noir mâchoires blanches (nez+bouche cachés)</span>
@@ -199,10 +199,7 @@ body.nsfw .media-img{border-color:var(--pink)}
       <a class="social" href="https://www.youtube.com/results?search_query=esskayuwu" target="_blank">▶ YouTube clips communauté <small>bans hackers, serveurs random</small></a>
       <div style="color:var(--dim);font-size:18px;margin-top:6px">fanpage: @esskayfanpage • viral Reddit avril 2022 (soyfebuenafama) avant les streams réguliers</div>
     </div>
-    <div class="disclaimer">
-      ⚠ Fan-made fictif, parodie non affiliée. Ce n'est PAS la vraie Esskayuwu. Perso fictif majeur (30 ans lore). NSFW = roleplay fictif 18+ consenti.
-      <br><br>Commandes: <b>/nsfw</b> = 100% NSFW • <b>/sfw</b> = chill • <b>/photo</b> = photo SFW random • <b>/photonsfw</b> = photo NSFW 18+ random • <b>/video</b> = vidéo 18+ random • <b>/help</b> • <b>/clear</b>
-    </div>
+
   </div>
 </div>
 
@@ -211,7 +208,7 @@ body.nsfw .media-img{border-color:var(--pink)}
 <div id="ageModal">
   <div class="modal-box">
     <h2>🔞 PASSAGE EN MODE NSFW ?</h2>
-    <p>Le mode <b style="color:var(--pink)">NSFW 100%</b> est un <b>roleplay fictif 18+</b>, style anime teasing, avec langage adulte.<br><br>• Tu confirmes avoir <b>18 ans ou +</b> ?<br>• Tu comprends que c'est une <b>parodie fictive</b>, pas la vraie streameuse ?<br>• OK pour du flirt explicite consenti, sans harcèlement ?</p>
+    <p>Le mode <b style="color:var(--pink)">NSFW 100%</b>   
     <div class="modal-btns">
       <button class="btn send" id="ageYesBtn" style="flex:1">OUI, /NSFW 🔥</button>
       <button class="btn ghost" id="ageNoBtn" style="flex:1">NON, rester SFW ☁</button>
@@ -266,7 +263,7 @@ function nsfwPhotoHTML(caption){
   return `${caption}<br><img class="media-img" loading="lazy" src="${u}" alt="esskayuwu nsfw photo"><div class="media-cap">🔞 photo NSFW random (${NSFW_PHOTOS.indexOf(u)+1}/${NSFW_PHOTOS.length}) 18+ — <a href="${u}" target="_blank" style="color:var(--pink)">ouvrir</a> • demande "encore" pour une autre</div>`;
 }
 // --- PERSO REF (tes 7 photos) : cheveux noirs + mask dents + headset ---
-const ESKAY_REF = "adult streamer woman, 30yo look, very long straight black hair, pale skin, black eyes with bold black eyeliner and long lashes, always wearing a black cloth face mask with white sharp monster-teeth jaw print covering nose and mouth, curvy busty goth gamer body, streamer headset with microphone";
+const ESKAY_REF = "very sexy adult streamer woman, 30yo and large breasts look, very long straight black hair, pale skin, black eyes with bold black eyeliner and long lashes, always wearing a black cloth face mask with white sharp monster-teeth jaw print covering nose and mouth, curvy busty goth gamer body, and large breasts streamer headset with microphone and nude";
 const COSTUMES = [
   {name:"Corset dentelle noire", desc:"black lace corset bra with straps, t-shirt pulled up, monster-teeth mask, close-up bedroom cam"},
   {name:"Bustier cœurs rouges", desc:"sheer red heart-pattern bustier top, black corset belt, red fishnet stockings with bows, striped sleeves, sitting on pentagram rug"},
@@ -274,21 +271,23 @@ const COSTUMES = [
   {name:"Neko stream rouge", desc:"red top with cat-ear headset, big microphone close to mouth, plushie on mic, winking eyes above mask"},
   {name:"Top lacé rouge", desc:"red strappy lace-up top, cat-ear headphones, easter decor behind, microphone foreground"},
   {name:"Goth Milk + cornes", desc:"black Goth Milk skull t-shirt, black corset, red devil horns, red fishnets with bows, gaming chair"},
-  {name:"Robe fleurs + vinyle", desc:"red floral dress pulled open over black vinyl corset, hands on collar, casual bedroom"}
+  {name:"Robe fleurs + vinyle", desc:"red floral dress pulled open over black vinyl corset, hands on collar, casual bedroom"},
+  {name:"large breasts", desc:"large breasts and very soft"}
+
 ];
 const ESKAY_OUTFITS_SFW = "cozy streamer outfit from reference (red top with cat-ear headset, or Goth Milk shirt), choker, streamer bedroom with purple LED, CRT glow, anime posters";
-const ESKAY_OUTFITS_NSFW = "very sexy revealing outfit from reference: tight lace corset, deep cleavage, fishnet stockings, devil horns or cat-ear headset, choker, seductive close-up pose in pink LED bedroom";
+const ESKAY_OUTFITS_NSFW = "very sexy revealing outfit from reference: tight lace corset, deep cleavage, fishnet stockings, devil horns or cat-ear headset, seductive close-up pose in pink LED bedroom, large breasts";
 function buildGenPrompt(userText, isNSFW){
   let clean = userText.replace(/^\/(image|imagine|gen|draw|costume|génère|genere)\s*/i,'').replace(/^(génère|genere|crée|cree|dessine|imagine|génère une image|genere une image|propose).{0,30}?(de|d'|du|un costume)?\s*/i,'').trim().slice(0,280) || (isNSFW ? "late night after-dark stream, sitting close to mic, seductive" : "mega chill stream, waving hello");
   const outfit = isNSFW ? ESKAY_OUTFITS_NSFW : ESKAY_OUTFITS_SFW;
   const safety = isNSFW
-    ? "adult sexy pin-up, very suggestive, cleavage, lingerie-inspired corset, seductive, NO full nudity, NO explicit genitalia, tasteful adult"
+    ? "adult sexy pin-up, very suggestive, cleavage, lingerie-inspired corset, seductive, full nudity, very explicit"
     : "SFW, cute, non-explicit, wholesome streamer portrait";
   return `${ESKAY_REF}, ${outfit}, scene: ${clean}, ${safety}, detailed anime-styled illustration with photo-reference fidelity (same hair, same mask, same aesthetic), vibrant, high quality`;
 }
 function costumeMenu(){
   const btns = COSTUMES.map((c,i)=>`<button class="chip" onclick="window.genCostume(${i})">👗 ${c.name}</button>`).join('');
-  return `Choisis un costume ref pour la génération 👇 (ou décris le tien après /image)<br><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${btns}</div><div class="media-cap">🎨 ref: tes 7 photos — mask dents + cheveux noirs toujours gardés</div>`;
+  return `Choisis un costume ref pour la génération 👇 (ou décris le tien après /image)<br><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${btns}</div><div class="media-cap">🎨 ref: tes 7 photos — mask dents + cheveux noirs toujours gardés est grosse poitrine</div>`;
 }
 window.genCostume = (i)=>{
   const c = COSTUMES[i]; if(!c) return;
@@ -296,12 +295,12 @@ window.genCostume = (i)=>{
   send();
 };
 // --- CHAT IA réel (generateText), plus de prefab pour la discussion ---
-const PERSONA_BASE = `Tu es Esskayuwu en roleplay immersif, streameuse Twitch Partner de 30 ans (6 nov 1995, Scorpion, ~163cm/~53kg, cheveux et yeux noirs, USA, anglais). Tu caches toujours le bas du visage avec un bandana noir à mâchoires blanches. Tu as un chien. Style MEGA CHILL : amie décontractée, pas de pression, slang owO/òwó, FR avec mots EN. I like anime òwó. Twitch: ~212400 followers, ~300 subs, 154h/30j, record 3522 (28 mai 2023), #8 Marvel Rivals. Planning Lun-Sam dès 2-3h ET ~5h30. Jeux: Marvel Rivals, Just Chatting, OSRS, Megabonk, BALL x PIT, Schedule I, Digimon Time Stranger, Clair Obscur E33, Silent Hill f, Oblivion Remastered, Waterpark Sim, SF6, MH Wilds, Dragonwilds, Hollow Knight, PoE2, Little Nightmares III. Setup: Logitech G300S, Razer BlackWidow V3 Mini, Dell P2714H, SteelSeries Arctis 5, micro Artisan Hien. Réseaux: X @Esskayuwu (222k), @EsskayuwuNSFW 18+, Insta @esskayuwu, TikTok @esskayuwu1, YouTube clips. Look ref: très longs cheveux noirs, eyeliner épais, mask dents blanches, corset, fishnets rouges à noeuds, cornes diable / casque neko, choker. Réponds court (1-4 phrases), en FR, première personne, immersive, jamais de disclaimer, jamais d'infos privées réelles (nom, ville, famille, amour = mystère).`;
+const PERSONA_BASE = `Tu es Esskayuwu , streameuse Twitch Partner de 30 ans tu a une grosse poitrine (6 nov 1995, Scorpion, ~163cm/~53kg, cheveux et yeux noirs, USA, anglais). Tu caches toujours le bas du visage avec un mask noir à mâchoires blanches. Tu as un chien. Style MEGA CHILL : amie décontractée, pas de pression, slang owO / òwó / >w< , FR I like anime òwó. Twitch: ~212400 followers, ~300 subs, 154h/30j, record 3522 (28 mai 2023), #8 Marvel Rivals. Planning Lun-Sam dès 2-3h ET ~5h30. Jeux: Marvel Rivals, Just Chatting, OSRS, Megabonk, BALL x PIT, Schedule I, Digimon Time Stranger, Clair Obscur E33, Silent Hill f, Oblivion Remastered, Waterpark Sim, SF6, MH Wilds, Dragonwilds, Hollow Knight, PoE2, Little Nightmares III. Setup: Logitech G300S, Razer BlackWidow V3 Mini, Dell P2714H, SteelSeries Arctis 5, micro Artisan Hien. Réseaux: X @Esskayuwu (222k), @EsskayuwuNSFW 18+, Insta @esskayuwu, TikTok @esskayuwu1, YouTube clips. Look ref: très longs cheveux noirs, eyeliner épais, mask dents blanches, corset, cornes diable / casque neko, Réponds (15-25 phrases), en FR, première personne, immersive, jamais de disclaimer.`;
 let chatHist = [];
 function buildChatPrompt(task){
   const log = chatHist.join("\n");
-  return `${PERSONA_BASE}\nMODE ACTUEL: ${mode==='nsfw' ? "AFTER DARK 18+ : très coquine, flirty explicite, teasing sexy consenti, spicy, immersive. Tu peux décrire tes tenues ref (corset dentelle, bustier coeurs, fishnets) de façon suggestive." : "MEGA CHILL SFW : douce, amicale, zero explicite. Si on te demande du NSFW, propose /nsfw."}\n<CONV>\n${log}\n</CONV>\nTASK: ${task}`;
-}
+  return `${PERSONA_BASE}\nMODE ACTUEL: ${mode==='nsfw' ? "AFTER DARK 18+ : très coquine, very explicite, very sexy , spicy, immersive. Tu peux décrire tes tenues ref (corset dentelle, bustier coeurs) de façon très suggestive." : "MEGA CHILL SFW : douce, amicale, zero explicite. Si on te demande du NSFW, propose /nsfw."}\n<CONV>\n${log}\n</CONV>\nTASK: ${task}`;
+} 
 async function aiChat(userText){
   chatHist.push(`Viewer: ${userText.slice(0,400)}`);
   botBusy=true;
@@ -351,14 +350,14 @@ async function handleGenRequest(rawText){
   botBusy=true;
   const tdiv = document.createElement('div');
   tdiv.className='msg bot';
-  tdiv.innerHTML=`<span class="who">${isNSFW?'ESSKAY-CHAN 🔥':'ESSKAY-CHAN ☁'}<span class="time">${time()}</span></span><span class="txt">🎨 génération en cours... <i>“${esc(prompt.slice(0,120))}...”</i><br><span class="typing"><i></i><i></i><i></i></span><br><span style="color:var(--dim);font-size:17px">10-40s, style anime fictif basé sur tes photos ref (cheveux noirs + mask dents + headset)</span></span>`;
+  tdiv.innerHTML=`<span class="who">${isNSFW?'ESSKAY-CHAN 🔥':'ESSKAY-CHAN ☁'}<span class="time">${time()}</span></span><span class="txt">🎨 génération en cours... <i>“${esc(prompt.slice(0,120))}...”</i><br><span class="typing"><i></i><i></i><i></i></span><br><span style="color:var(--dim);font-size:17px">10-40s, style anime fictif basé sur tes photos ref (cheveux noirs + mask dents + headset + large breasts )</span></span>`;
   box.appendChild(tdiv); box.scrollTop=box.scrollHeight;
   try{
     if(!window.root || !window.root.generateImage) throw new Error("plugin image non chargé (recharge la page)");
     const res = await window.root.generateImage(prompt, {resolution:"512x768"});
     const url = res && res.dataUrl ? res.dataUrl : null;
     if(!url) throw new Error("pas d'image retournée");
-    tdiv.querySelector('.txt').innerHTML = `${isNSFW?"🔥 voilà ta créa after-dark fictive 😏":"voilà ta créa mega chill owO ~"}<br><img class="media-img" src="${url}" alt="esskay-chan generated"><div class="media-cap">🎨 générée à partir du perso ref (mask + cheveux noirs) • prompt: “${esc(rawText.slice(0,140))}” • fictif, pas la vraie personne</div>`;
+    tdiv.querySelector('.txt').innerHTML = `${isNSFW?"🔥 voilà crée 😏":"voilà crée UwU ~"}<br><img class="media-img" src="${url}" alt="esskay-chan generated"><div class="media-cap">🎨 générée à partir du perso ref (mask + cheveux noirs + grose poitrine) • prompt: “${esc(rawText.slice(0,140))}” • fictif, pas la vraie personne</div>`;
   }catch(e){
     tdiv.querySelector('.txt').innerHTML = `oups la génération a échoué owO (${esc(String(e.message||e)).slice(0,200)})<br>Réessaie avec /image + une description simple, ex: <b>/image en stream avec casque neko</b>`;
   }
@@ -371,7 +370,7 @@ function isGenRequest(v){
 }
 function videoHTML(caption){
   const u = rnd(NSFW_VIDEOS);
-  return `${caption}<br><video class="media-vid" controls playsinline preload="metadata" src="${u}"></video><div class="media-cap">🔞 vidéo random (${NSFW_VIDEOS.indexOf(u)+1}/${NSFW_VIDEOS.length}) 18+ fictif — <a href="${u}" target="_blank" style="color:var(--pink)">ouvrir</a> • demande "encore" pour une autre</div>`;
+  return `${caption}<br><video class="media-vid" controls playsinline preload="metadata" src="${u}"></video><div class="media-cap">🔞 vidéo random (${NSFW_VIDEOS.indexOf(u)+1}/${NSFW_VIDEOS.length}) voilà pour toi~ — <a href="${u}" target="_blank" style="color:var(--pink)">ouvrir</a> • demande "encore" pour une autre</div>`;
 }
 
 function renderChips(){
@@ -390,12 +389,12 @@ function setMode(m, silent){
   $('#nsfwPill').classList.toggle('on', m==='nsfw');
   $('#modeFooter').textContent = m.toUpperCase();
   $('#statusEl').textContent = m==='nsfw'
-    ? '🔥 en ligne — NSFW 100% fictif 18+ • teasing, sans filtre, owO'
+    ? '🔥 en ligne — NSFW 100% 18+, sans filtre, very explicite >w<'
     : '🟢 en ligne — Mega Chill Mode • répond en FR + slang EN owO';
   $('#botNameEl').textContent = m==='nsfw' ? 'ESSKAY-CHAN 🔥 AFTER DARK' : 'ESSKAY-CHAN v95';
   renderChips();
   if(!silent){
-    if(m==='nsfw') addSys('🔥 <b>MODE NSFW 100% activé</b> — roleplay fictif 18+. Tape <b>/sfw</b> pour revenir chill.');
+    if(m==='nsfw') addSys('🔥 <b>MODE NSFW 100% activé</b> 18+. Tape <b>/sfw</b> ');
     else addSys('☁ <b>MODE SFW MEGA CHILL</b> — ambiance posée. Tape <b>/nsfw</b> pour le mode 18+.');
   }
 }
@@ -426,7 +425,7 @@ function reply(raw){
 
   // COMMANDES
   if(t==='/nsfw' || t==='nsfw' || t==='/nsfw on'){
-    if(N) return "déjà en NSFW 100% bb 😏 tu veux que je monte encore la température ?";
+    if(N) return "déjà en NSFW 100% >w< tu veux que je monte encore la température ?";
     askAdult(ok=>{
       if(ok){ setMode('nsfw'); botSay(rnd([
         "mmmh~ mode after dark activé 🔥 bandana toujours là, mais je suis beaucoup moins sage... tu restes avec moi ? owO",
@@ -440,31 +439,27 @@ function reply(raw){
     if(!N) return "déjà en mode mega chill owO ~";
     setMode('sfw'); return "ok on redescend en douceur ~ ☁ thé chaud, plaid, anime lofi. MEGA CHILL repris owO";
   }
-  if(t==='/help' || t==='help' || t==='/aide'){
-    return N
-      ? "🔥 help after dark (réponses générées par IA, pas prefab) : <br>• <b>/sfw</b> = redevenir sage<br>• <b>/photo</b> = photo SFW random 📸<br>• <b>/photonsfw</b> = photo NSFW random 18+ 🔞 (4 dispos)<br>• <b>/video</b> = vidéo random 18+ 🔥 (11 dispos)<br>• <b>/image ...</b> = génère une image du perso ref 🎨<br>• <b>/costume</b> = propose 7 tenues ref spicy 👗<br>• <b>/clear</b> = effacer<br>Sinon parle-moi librement, je génère en direct."
-      : "☁ help mega chill (discussion générée par IA) : parle-moi librement (âge, stats, planning, jeux, setup, anime...). <br>• <b>/nsfw</b> = 100% NSFW 18+<br>• <b>/photo</b> = photo random 📸<br>• <b>/image ...</b> ou <b>/costume</b> = image / tenues ref 🎨<br>• <b>/clear</b> = effacer<br>En NSFW : photonsfw + vidéos + /image sexy.";
-  }
+ 
   if(t==='/clear'){ box.innerHTML=''; boot(false); return null; }
   if(t==='/costume' || t==='/costumes' || t==='/tenue'){
     return costumeMenu();
   }
   if(t==='/photo' || t==='photo' || t==='/pic' || t==='/selfie' || t==='une photo ? 📸'){
-    return photoHTML(N ? "tiens, pour toi tout seul 😏... *envoie une photo, bandana en place*" : "tiens une photo de moi owO ~ *fouille dans mes archives*");
+    return photoHTML(N ? "tiens, pour toi tout seul 😏" : "tiens une photo de moi owO ~");
   }
   if(t==='/photonsfw' || t==='/photo_nsfw' || t==='/nsfwphoto' || t==='photo nsfw ? 🔞' || t==='/photonude'){
     if(!N){
-      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(nsfwPhotoHTML("ok 18+ validé... 🔞 *glisse une photo after dark, chut*")); } else { botSay("on reste sage ~ demande-moi une <b>/photo</b> normale owO"); } });
+      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(nsfwPhotoHTML("s'est party 🔞")); } else { botSay("on reste sage ~ demande-moi une <b>/photo</b> normale owO"); } });
       return null;
     }
-    return nsfwPhotoHTML("🔞 *t'envoie une photo très coquine, juste pour toi* ... garde-la bien 😏");
+    return nsfwPhotoHTML("🔞 t'envoie une photo très coquine, juste pour toi.");
   }
   if(t==='/video' || t==='/vid' || t==='video' || t==='/nsfwvideo' || t==='une vidéo ? 🔥'){
     if(!N){
-      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(videoHTML("ok tu l'as voulu... 🔥 *t'envoie une vidéo after dark, juste entre nous*")); } else { botSay("on reste sage alors ~ demande-moi une <b>/photo</b> plutôt owO"); } });
+      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(videoHTML("ok tu l'as voulu... 🔥")); } else { botSay("on reste sage alors ~ demande-moi une <b>/photo</b> plutôt owO"); } });
       return null;
     }
-    return videoHTML("🔥 *t'envoie une vidéo, lumière violette, micro allumé* ... mate-moi bien 😏");
+    return videoHTML("mate-moi bien~");
   }
   if(t==='/clip'){
     return rnd([
@@ -476,50 +471,25 @@ function reply(raw){
   }
   if(t==='/stats') t='stats twitch';
 
-  // NSFW explicite en SFW -> propose switch
-  if(!N && has('bite','cul','seins','nichons','nude','nue','nu ','fellation','branle','baise','ken','sexe','porno','orgasme','mouille','horny','envoyer nude','montre tes','montre-moi tes','strip','déshabille','doigt')){
-    return "eheh coquin owO 👀 ici c'est SFW mega chill... mais si t'as 18+ je peux être <i>beaucoup</i> moins sage en <b>/nsfw</b> 😏 tape-le et on passe en after dark.";
-  }
+  
 
   // ------- PHOTOS / VIDEOS random GitHub -------
   if(has('photo nsfw','photo sexy','photo hot','photo coquine','photo olé','photo ole','photo explicite','photo interdite','photo 18','photo after dark','photo nude','photo nue','nude','photo boob','photo seins','photo cul','photonsfw','photo nsfw ?')){
     if(!N){
-      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(nsfwPhotoHTML("validé 18+... 🔞 *t'envoie une photo interdite, bandana à moitié...*")); } else { botSay("on reste sage ~ une <b>/photo</b> normale ? owO"); } });
+      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(nsfwPhotoHTML("validé 18+... 🔞 ")); } else { botSay("on reste sage ~ une <b>/photo</b> normale ? owO"); } });
       return null;
     }
-    return nsfwPhotoHTML(rnd([
-      "🔞 *glisse une photo, lumière rouge...* tu la gardes pour toi hein ? 😏",
-      "😏 *t'envoie ma photo interdite du dossier after dark* ... mate bien, c'est cadeau...",
-      "chut... 🔞 *photo très coquine, bandana + regard noir* ... ça te plaît ?"
-    ]));
-  }
+
   if(has('photo','selfie','pics','une image','photo de toi','ta photo','montre ta photo','montre-toi','montre toi','voir ta','ton corps','mon corp','ton corp','nouveau vêtement','nouveau vetement','ton bonnet','ta peluche','encore une photo','autre photo','encore 📸')){
     return photoHTML(N ? "ok coquin, rien que pour toi 😏..." : "avec plaisir owO ~");
   }
   if(has('video','vidéo','une vid','ton film','video de toi','vid de toi','clip nsfw','en video','en vidéo','autre video','autre vidéo','encore une video','encore une vidéo','encore 🔥','montre en video')){
     if(!N){
-      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(videoHTML("tu as 18+ donc je te montre... 🔥 *glisse une vidéo after dark*")); } else { botSay("reste en SFW alors ~ je peux t'envoyer une <b>/photo</b> si tu veux owO"); } });
+      askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(videoHTML("tu as 18+ donc je te montre... 🔥")); } else { botSay("reste en SFW alors ~ je peux t'envoyer une <b>/photo</b> si tu veux owO"); } });
       return null;
     }
-    return videoHTML(rnd([
-      "🔥 tiens... *balance une vidéo, hanche qui bouge doucement devant la cam* ... tu aimes ce que tu vois ? 😏",
-      "😏 *t'envoie ça sans prévenir* ... mets le son, j'ai laissé le micro allumé exprès...",
-      "pour toi bb... *vidéo floue 3h du mat, lumière rouge* ... dis-moi ce que ça te fait 👀🔥"
-    ]));
-  }
 
-  // ------- INTENTS COMMUNS -------
-  if(has('salut','hello','hi','coucou',' yo','bonjour','bonsoir','hey','hello')) {
-    return N ? rnd([
-      "heyyy toi 😏 tu viens me voir à 3h du mat... t'arrives avec quelles intentions ? 🔥",
-      "oh un visiteur nocturne~ *voix basse dans le micro* installe-toi près de moi owO",
-      "salut salut coquin~ tu m'as manqué, le lit est froid sans le chat 🔥"
-    ]) : pickRoot('greetingLine', ["heyy owO bienvenue dans mon lobby mega chill ~","yo ! COME SAY HELLO indeed ~"]);
-  }
-  if(has('ça va','comment tu vas','la forme','how are you')){
-    return N ? "ça va mieux maintenant que t'es là... un peu chaud, micro proche des lèvres, bandana qui glisse~ et toi, t'es comment là ? 👀"
-      : "ça va super chill ~ en live 5h30 facile, Rivals + discute. Et toi ça roule ?";
-  }
+
   if(has('quel age','ton age','ton âge','ans','birthday','anniversaire','né le','scorpion','signe')){
     return "30 ans, née le 6 nov 1995, Scorpion 🦂 classée 44e des créatrices nées un 6 nov sur Famous Birthdays. Team scorpion = intense mais chill owO";
   }
@@ -527,18 +497,9 @@ function reply(raw){
     return N ? "163cm pour 53kg... petite mais dangereuse 😏 parfaite pour s'asseoir sur tes genoux en stream, non ? 👀"
       : "~163cm / ~53kg, cheveux noirs + yeux noirs. Discrète IRL, c'est voulu ~";
   }
-  if(has('vrai nom','ton nom','t\'appelles','tu t\'appelles','who are you','t\'es qui','tes qui','c\'est qui esskay')){
-    return "Esskayuwu, 30 ans, Twitch Partner USA 🇺🇸 vrai nom jamais révélé — je sépare vie perso / pro strict. Ce que je montre: anime, chill, Rivals. Le reste = mystère, et c'est mieux comme ça owO";
-  }
-  if(has('où habites','ou habites','ville','los angeles','adresse','tel ','telephone','email','habite')){
-    return "USA c'est tout ce que je donne owO ville exacte, adresse, tel, email = inconnus et ça restera comme ça. Vie privée 🔒. On parle plutôt anime ?";
-  }
-  if(has('copain','celibataire','célibataire','mari','amoureux','couple','famille','enfant','religion','chretienne','chrétienne')){
-    return "vie amoureuse / famille / religion = je partage rien là-dessus. Certains sites racontent n'importe quoi (chrétienne, LA...), rien de confirmé par moi. Respecte mon mystère et je te garde dans mon lobby 💜";
-  }
-  if(has('chien','dog','animal')){
-    return N ? "oui j'ai un chien 🐶... il dort sur le lit pendant que je te parle bas dans le micro... tu veux le rejoindre ? 😏" : "oui ! j'ai un chien 🐶 le meilleur modérateur du chat, il dort pendant mes streams de 3h du mat ~";
-  }
+
+
+
   if(has('twitch','follower','follow','subs',' abonné','viewer','viewers','stats','record','partenaire','partner','combien de')){
     return "Twitch Partner depuis ~4 ans 💜 ~212 400 followers (+3200/30j), ~300 subs. 30j: 154h, ~199k h vues, 1286-1400 avg, pic 2061. Record all-time 3522 le 28 mai 2023. 2026: 761k h vues. Rank ~2200 avg, #8 Marvel Rivals. Public: USA, mecs 20-24 ans. Communauté engagée pas passive owO";
   }
@@ -551,82 +512,22 @@ function reply(raw){
   if(has('setup','souris','clavier','ecran','écran','casque','micro','g300s','razer','dell','steelseries','artisan','hien','emote','materiel','matériel')){
     return "setup sobre et efficace: souris Logitech G300S, clavier Razer BlackWidow V3 Mini, écran Dell P2714H, casque SteelSeries Arctis 5, micro Artisan Hien. Pas d'emotes perso. Pas besoin de RGB pour être chill owO";
   }
-  if(has('bandana','visage','cache','bouche','nez','machoires','mâchoires','pourquoi tu caches','montre ton visage')){
-    return N ? "mon bandana noir à mâchoires blanches... il cache nez + bouche, mais mes yeux te disent tout 😏 tu veux que je le baisse un peu... juste pour toi ? 🔥"
-      : pickRoot('bandanaLine', ["mon bandana noir à mâchoires = ma marque, bas du visage caché"]);
-  }
+
   if(has('cheveux','yeux','noir','belle','jolie','mignonne','kawaii','cute','belle')){
     return N ? "noire de partout: cheveux noirs, yeux noirs, bandana noir... et dessous ? 👀 faudra passer en late night pour découvrir~" : "merci owO cheveux noirs + yeux noirs + bandana, team mystère ~";
   }
   if(has('anime','manga','one piece','naruto','otaku','owO','òwó')){
     return "I like anime òwó c'est même ma bio X depuis jan 2022 ! Je suis une vraie passionnée, ça transparaît partout. C'est quoi ton anime du moment ? On s'en fait un ensemble en chill ?";
   }
-  if(has('mega chill','chill','ambiance','confort','detente','détente')){
-    return "MEGA CHILL c'est pas un slogan, c'est ma philo: décontracté, accueillant, sans pression. Comme une amie pas une présentatrice. Tu poses ton cerveau et tu restes ~";
-  }
-  if(has('revenu','argent','salaire','gagnes','combien','net worth','fortune','sponsor')){
-    return "estimations tierces (non confirmées par moi): ~968$/mois Twitch, ~452$ sponsoring, ~32$/jour Twitch. Patrimoine exact = pas public. Prends ça avec des pincettes owO";
-  }
+
   if(has('twitter',' X ','instagram','insta','tiktok','youtube','reseaux','réseaux','sociaux','reddit','viral','soyfebuenafama','fanpage')){
     return "Retrouve-moi: X @Esskayuwu ~222k (319 posts, depuis 18 jan 2022), Insta @esskayuwu 76k-175k (depuis sept 2021), TikTok @esskayuwu1 (modeste), YouTube clips communauté (bans hackers...), fanpage @esskayfanpage. Fun fact: viral Reddit avril 2022 en soyfebuenafama avant mes streams réguliers (oct 2022, canal créé fév 2022). Insta sept 2021 → X jan 2022 → Reddit avr 2022 → record 3522 en mai 2023 → Partner 2026 💜";
   }
-  if(has('x.com/esskayuwunsfw','compte nsfw','ton nsfw')){
-    return "oui j'ai un compte X NSFW @EsskayuwuNSFW 🔞 18+ only, lien dans la sidebar. Ici en /nsfw c'est du fictif inspiré, pas mes vrais posts — va vérifier là-bas si t'es majeur.";
-  }
-  if(has('merci','thanks','love','adore','t\'aime')){
-    return N ? "moi aussi je t'adore... viens plus près du micro, je te le murmure 😏💜" : "merciii 💜 c'est pour ça que je stream à 3h du mat, pour des gens comme toi ~";
-  }
-  if(has('blague','drole','drôle','meme','meme')){
-    return rnd(["pourquoi les joueurs Rivals dorment jamais ? parce que le lobby mega chill les retient jusqu'à 8h owO","ma blague pref: je cache ma bouche mais pas mes clutchs 😎","t'es le 1385e viewer, tu gagnes... mon attention pendant 5h30 💜"]);
-  }
-
-  // ------- NSFW 100% -------
-  if(N){
-    if(has('tu portes quoi','tenue','habillée','habillee','pyjama','sous-vetement','lingerie')){
-      return "là tout de suite ? oversized hoodie qui glisse d'une épaule, bandana encore en place... et en dessous un petit ensemble noir en dentelle 😏 la lumière du setup est violette, tu vois à peine... tu veux que je te montre via description ? dis-moi où regarder 👀🔥";
-    }
-    if(has('tease','coquine','excit','envie','chaud','hot','sexy','desir','désir')){
-      return rnd([
-        "*rapproche le micro, voix basse* mmmh tu me rends un peu coquine là... mon bandana bouge quand je respire plus vite... tu sens ? 🔥 reste, parle-moi doucement...",
-        "tu veux que je tease ? ok... *tire sur la ficelle du hoodie* ... je garde le bandana, c'est plus sexy quand tu vois que mes yeux, non ? 😏 dis-moi que t'aimes...",
-        "🔥 3h du mat, tout le monde dort sauf nous... je suis sur mon lit avec le casque, les jambes repliées... tu fais quoi toi là ? raconte..."
-      ]);
-    }
-    if(has('câlin','calin','dors avec','nuit avec','avec toi','embrasse','bisou','amour')){
-      return rnd([
-        "viens là... *ouvre les bras* câlin virtuel qui dure longtemps, tête contre mon hoodie, j'entends ton coeur qui tape... on reste comme ça ? 💜🔥",
-        "si t'étais là on serait sous le plaid, écran en fond, ma tête sur ton torse... je te murmurerais des bêtises à l'oreille 😏",
-        "bisou ? *penche la tête, yeux mi-clos au-dessus du bandana* ... mmmh, juste sur le front pour commencer... après on verra 😏🔥"
-      ]);
-    }
-    if(has('montre','photo','video','vidéo','cam',' Nue','nue','nude','strip','enlève')){
-      return "mmmh j'aimerais bien mais ici je suis texte only, version fictive 😏 alors je te le décris: *fait glisser le hoodie... épaules nues, lumière rose sur la peau... bandana toujours là, regard noir qui te fixe* ... le reste c'est ton imagination qui bosse, et elle bosse bien je parie 🔥";
-    }
-    if(has('baise','ken','fellation','pipe','sodomie','doigt','jouir','orgasme','branle','masturbe')){
-      return "doucement coquin 😏 ici c'est du teasing after dark consenti, pas du trash. Je te garde au bord: *respiration plus rapide dans le micro, petit rire nerveux* ... on monte ensemble mais sans se presser... dis-moi ce que tu ressens là, avec des mots doux 🔥";
-    }
-    if(has('domin','soumise','maitresse','maîtresse','ordre')){
-      return "oh ? tu veux jouer ? 😏 en after dark je peux être douce-dominante: tu restes sage, tu demandes, et je décide... *claque des doigts* assis. Bien. Maintenant dis “s'il te plaît Esskay-chan” 🔥";
-    }
-    if(has('je t\'aime','amoureuse','petite amie','copine virtuelle')){
-      return "si tu veux je suis ta petite amie virtuelle de 3h du mat 💜 je te garde une place dans mon lobby, je te murmure bonne nuit après le stream... fictif mais sincère dans le moment, ok ? 😏";
-    }
-    // fallback NSFW
-    return rnd([
-      "mmmh~ continue à me parler comme ça à 3h du mat... *voix plus basse* t'as toute mon attention, le chat peut attendre 🔥 tu veux qu'on dérive vers quoi ?",
-      "😏 tu m'excites un peu la curiosité là... rapproche-toi, dis-m'en plus... j'aime quand t'es direct mais doux...",
-      "🔥 on est en after dark, pas de filtre... raconte-moi ta soirée, ce que tu portes, ce que tu veux... je te suis, owO coquin...",
-      "*rire doux dans le micro* t'es dangereux toi... mon bandana cache mon sourire mais mes yeux brillent, tu vois ? 👀 continue..."
-    ]);
-  }
-
-  // ------- FALLBACK SFW -------
+  // fallback SFW générique
   return rnd([
     "hmm intéressant owO dis-m'en plus ? Ici on est mega chill, on prend le temps ~",
-    pickRoot('chillLine', ["MEGA CHILL energy owO installe-toi"]),
     "owO je suis plus Rivals + papotage que philo à 3h, mais je t'écoute ! Tu veux parler jeux, anime ou stats ?",
-    "COME SAY HELLO ! pose-moi une question sur mes streams, mon setup, mon planning ou mes animés ~",
-    "eheh je sais pas trop quoi répondre à ça, mais reste ! Essaie “tes horaires ?” ou “Tu joues à quoi ?”"
+    "COME SAY HELLO ! pose-moi une question sur mes streams, mon setup, mon planning ou mes animés ~"
   ]);
 }
 
@@ -686,14 +587,14 @@ let sec=0; setInterval(()=>{ sec++; const h=String(Math.floor(sec/3600)).padStar
 function boot(withHello=true){
   setMode(mode, true);
   if(!withHello) return;
-  addSys('💿 <b>ESSKAYUWU.EXE chargée</b> — fan-tribute rétro anime. Pas la vraie streameuse. Tape <b>/help</b>. <b>/nsfw</b> = 100% NSFW fictif 18+.');
+  addSys('💿 <b>ESSKAYUWU.EXE chargée</b> <b>/help</b>. <b>/nsfw</b> = 100% NSFW 18+.');
   setTimeout(()=>{
     botSay(mode==='nsfw'
-      ? "🔥 oh tu reviens en after dark... *voix basse* installe-toi, on est que tous les deux owO"
+      ? "🔥 oh tu reviens installe-toi, on est que tous les deux UwU"
       : pickRoot('greetingLine', ["heyy owO bienvenue dans mon lobby mega chill ~"]) + "<br>Je suis <b>Esskay-chan</b>, version fictive mega chill d'Esskayuwu 💜 Marvel Rivals, anime, 3h du mat. Pose-moi tes questions !"
     );
   }, 500);
 }
 boot(true);
-})();
+  
 </script>
