@@ -59,7 +59,7 @@ body.nsfw .avatar{border-color:var(--pink)}
 @keyframes neon{to{box-shadow:0 0 14px var(--pink)}}
 .pill.small{font-size:8px; opacity:.9}
 .cmd-hint{font-size:17px; color:var(--dim)} .cmd-hint code{color:var(--lime); background:#000; padding:1px 6px; border:1px solid #333}
-#chatBox{height:52vh; min-height:340px; max-height:620px; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:10px; background:
+#chatBox{height:68vh; min-height:480px; max-height:940px; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:10px; background:
   linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
   repeating-linear-gradient(0deg, #0d0d1f 0 22px, #0b0b1b 22px 44px);}
 .msg{max-width:86%; padding:8px 11px; border:2px solid #33335a; background:#16162e; position:relative; word-wrap:break-word}
@@ -73,9 +73,18 @@ body.nsfw .msg.bot{border-left-color:var(--pink)}
 .msg .time{font-size:15px; color:#55557a; margin-left:8px}
 .typing{display:inline-block} .typing i{display:inline-block; width:7px;height:7px;background:var(--cyan);margin-right:3px;animation:tb 1s infinite} .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
 @keyframes tb{50%{opacity:.2; transform:translateY(-3px)}}
+.think-tip{font-size:16px; color:var(--dim); margin-top:6px; padding-top:6px; border-top:1px dashed #33335a; animation:tipin .4s ease}
+body.nsfw .think-tip{color:#c98ba8}
+@keyframes tipin{from{opacity:0; transform:translateY(3px)}}
 .chips{display:flex; gap:8px; flex-wrap:wrap; padding:10px 12px; background:#0a0a18; border-top:2px solid #222244}
 .chip{font-size:18px; background:#1a1a36; border:2px solid #44446a; color:var(--text); padding:4px 10px; cursor:pointer; border-radius:20px}
 .chip:hover{border-color:var(--cyan); color:var(--cyan)} body.nsfw .chip:hover{border-color:var(--pink); color:var(--pink)}
+.chip.on{border-color:var(--cyan); color:var(--cyan); background:#0a2a36}
+body.nsfw .chip.on{border-color:var(--pink); color:var(--pink); background:#2a0a1c}
+.costume-builder .chip{font-size:17px; white-space:nowrap; flex-shrink:0; line-height:1.3}
+.costume-builder .sec-row{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px}
+#costumeFreeInput:focus{border-color:var(--cyan); outline:none}
+body.nsfw #costumeFreeInput:focus{border-color:var(--pink)}
 .input-row{display:flex; gap:8px; padding:12px; background:#0a0a18; border-top:3px solid #2a2a4a}
 #chatInput{flex:1; background:#000; border:2px solid #44446a; color:var(--text); font-family:'VT323',monospace; font-size:21px; padding:10px 12px; outline:none}
 #chatInput:focus{border-color:var(--cyan)} body.nsfw #chatInput:focus{border-color:var(--pink)}
@@ -263,32 +272,156 @@ function nsfwPhotoHTML(caption){
   return `${caption}<br><img class="media-img" loading="lazy" src="${u}" alt="esskayuwu nsfw photo"><div class="media-cap">🔞 photo NSFW random (${NSFW_PHOTOS.indexOf(u)+1}/${NSFW_PHOTOS.length}) 18+ — <a href="${u}" target="_blank" style="color:var(--pink)">ouvrir</a> • demande "encore" pour une autre</div>`;
 }
 // --- PERSO REF (tes 7 photos) : cheveux noirs + mask dents + headset ---
-const ESKAY_REF = "very sexy adult streamer woman, 30yo and large breasts look, very long straight black hair, pale skin, black eyes with bold black eyeliner and long lashes, always wearing a black cloth face mask with white sharp monster-teeth jaw print covering nose and mouth, curvy busty goth gamer body, and large breasts streamer headset with microphone and nude";
+const ESKAY_REF = "adult streamer woman, 30yo, very long straight black hair, pale skin, black eyes with bold black eyeliner and long lashes, always wearing a black cloth face mask with white sharp monster-teeth jaw print covering nose and mouth, curvy busty goth gamer body, streamer headset with microphone";
+// compat: anciens boutons window.genCostume(i) déjà affichés dans l'historique
 const COSTUMES = [
-  {name:"Corset dentelle noire", desc:"black lace corset bra with straps, t-shirt pulled up, monster-teeth mask, close-up bedroom cam"},
-  {name:"Bustier cœurs rouges", desc:"sheer red heart-pattern bustier top, black corset belt, red fishnet stockings with bows, striped sleeves, sitting on pentagram rug"},
-  {name:"Chemisier blanc + LED rose", desc:"unbuttoned white ribbed shirt wide open, red choker with heart ring, pink-purple LED bedroom, big cleavage"},
-  {name:"Neko stream rouge", desc:"red top with cat-ear headset, big microphone close to mouth, plushie on mic, winking eyes above mask"},
-  {name:"Top lacé rouge", desc:"red strappy lace-up top, cat-ear headphones, easter decor behind, microphone foreground"},
-  {name:"Goth Milk + cornes", desc:"black Goth Milk skull t-shirt, black corset, red devil horns, red fishnets with bows, gaming chair"},
-  {name:"Robe fleurs + vinyle", desc:"red floral dress pulled open over black vinyl corset, hands on collar, casual bedroom"},
-  {name:"large breasts", desc:"large breasts and very soft"}
-
+  {name:"Corset dentelle noire", desc:"black lace corset bra with straps, t-shirt pulled up"},
+  {name:"Bustier cœurs rouges", desc:"sheer red heart-pattern bustier top, black corset belt, striped sleeves"},
+  {name:"Chemisier blanc + LED rose", desc:"unbuttoned white ribbed shirt wide open, red choker with heart ring"},
+  {name:"Neko stream rouge", desc:"red top with cat-ear headset, big microphone close to mouth"},
+  {name:"Top lacé rouge", desc:"red strappy lace-up top, cat-ear headphones"},
+  {name:"Goth Milk + cornes", desc:"black Goth Milk skull t-shirt with corset, red devil horns"},
+  {name:"Robe fleurs + vinyle", desc:"red floral dress pulled open over black vinyl corset, hands on collar"},
+  {name:"large breasts", desc:"large breasts"}
+];
+const COSTUME_BASES = COSTUMES.slice(0,7);
+const CHEST_OPTS = [
+  {name:"Naturelle", desc:"natural breasts, realistic proportions"},
+  {name:"Large", desc:"large breasts, soft natural cleavage"},
+  {name:"Énorme", desc:"huge breasts, deep cleavage, very busty"},
+  {name:"Mise en avant extrême", desc:"enormous breasts pushed together, close-up cleavage focus", nsfw:true}
+];
+const TENUE_OPTS = [
+  {name:"Habillée complète", desc:"fully dressed, complete outfit"},
+  {name:"Haut uniquement", desc:"wearing only a top, nude lower body, bare legs, no panties", nsfw:true},
+  {name:"Bas uniquement", desc:"wearing only bottom, topless, bare breasts, nude upper body", nsfw:true},
+  {name:"Nude totale", desc:"fully nude, naked body, no clothes", nsfw:true}
+];
+const EXTRA_OPTS = [
+  {name:"Fishnets + nœuds", desc:"red fishnet stockings with bows"},
+  {name:"Cornes diable", desc:"red devil horns"},
+  {name:"Casque neko", desc:"cat-ear headset"},
+  {name:"Choker cœur", desc:"red choker with heart ring"},
+  {name:"Micro proche", desc:"big microphone very close to mouth, plushie on mic"},
+  {name:"LED rose", desc:"pink-purple LED bedroom background"}
+];
+const POSE_OPTS = [
+  {name:"Close-up cam", desc:"close-up bedroom cam, face and chest framing"},
+  {name:"Assise gaming", desc:"sitting on gaming chair, legs crossed"},
+  {name:"Allongée lit", desc:"lying on bed, arched back"},
+  {name:"Debout miroir", desc:"standing in front of mirror, hand on collar"},
+  {name:"Penchée micro", desc:"leaning close to microphone, winking eyes above mask"}
+];
+const CADRAGE_OPTS = [
+  {name:"Corps entier", desc:"full body shot, head to feet, wide framing"},
+  {name:"Haut du corps", desc:"upper body framing, face and chest in frame"},
+  {name:"Bas du corps", desc:"lower body framing, hips and legs in frame"},
+  {name:"Visage", desc:"extreme close-up on face, eyes above mask"},
+  {name:"Poitrine", desc:"extreme close-up on breasts, cleavage filling frame", nsfw:true},
+  {name:"Hanches & fesses", desc:"hips and buttocks focus, rear view", nsfw:true},
+  {name:"Jambes", desc:"legs focus, stockings detail"}
+];
+const MAST_OPTS = [
+  {name:"Non", desc:""},
+  {name:"Légère", desc:"masturbating gently, soft moans, slow fingers teasing", nsfw:true},
+  {name:"Forte", desc:"masturbating hard, moaning loudly into the microphone", nsfw:true},
+  {name:"Très forte", desc:"masturbating wildly, intense orgasm face, arched back", nsfw:true}
+];
+const SQUIRT_OPTS = [
+  {name:"Non", desc:""},
+  {name:"Légère", desc:"light wetness, small squirt", nsfw:true},
+  {name:"Forte", desc:"strong squirting, wet sheets", nsfw:true},
+  {name:"Très forte", desc:"extreme squirting, soaking wet, intense climax", nsfw:true}
+];
+const TOY_OPTS = [
+  {name:"Rien", desc:""},
+  {name:"Doigts", desc:"using fingers", nsfw:true},
+  {name:"Jouet vibrant", desc:"using a vibrating toy", nsfw:true},
+  {name:"Gode", desc:"using a dildo", nsfw:true}
 ];
 const ESKAY_OUTFITS_SFW = "cozy streamer outfit from reference (red top with cat-ear headset, or Goth Milk shirt), choker, streamer bedroom with purple LED, CRT glow, anime posters";
-const ESKAY_OUTFITS_NSFW = "very sexy revealing outfit from reference: tight lace corset, deep cleavage, fishnet stockings, devil horns or cat-ear headset, seductive close-up pose in pink LED bedroom, large breasts";
+const ESKAY_OUTFITS_NSFW = "revealing outfit, deep cleavage, fishnet stockings, devil horns or cat-ear headset, pink LED bedroom";
 function buildGenPrompt(userText, isNSFW){
-  let clean = userText.replace(/^\/(image|imagine|gen|draw|costume|génère|genere)\s*/i,'').replace(/^(génère|genere|crée|cree|dessine|imagine|génère une image|genere une image|propose).{0,30}?(de|d'|du|un costume)?\s*/i,'').trim().slice(0,280) || (isNSFW ? "late night after-dark stream, sitting close to mic, seductive" : "mega chill stream, waving hello");
-  const outfit = isNSFW ? ESKAY_OUTFITS_NSFW : ESKAY_OUTFITS_SFW;
+  let clean = userText.replace(/^\/(image|imagine|gen|draw|costume|génère|genere)\s*/i,'').replace(/^(génère|genere|crée|cree|dessine|imagine|génère une image|genere une image|propose).{0,30}?(de|d'|du|un costume)?\s*/i,'').trim().slice(0,400) || (isNSFW ? "late night after-dark stream, sitting close to mic, seductive" : "mega chill stream, waving hello");
+  // vraie génération : si le texte est déjà détaillé (builder multi-options), on n'écrase pas avec le prefab
+  const isDetailed = clean.length > 70 || (clean.includes(',') && clean.length > 30);
+  const outfit = isDetailed ? "" : (isNSFW ? ESKAY_OUTFITS_NSFW : ESKAY_OUTFITS_SFW);
+  const wantsNude = /nude|naked|topless|no clothes|no panties|bare breast|squirt|masturbat|dildo|vibrating toy/i.test(clean);
   const safety = isNSFW
-    ? "adult sexy pin-up, very suggestive, cleavage, lingerie-inspired corset, seductive, full nudity, very explicit"
+    ? (wantsNude ? "adult sexy pin-up, very suggestive, full nudity, explicit" : "adult sexy pin-up, very suggestive, cleavage, seductive")
     : "SFW, cute, non-explicit, wholesome streamer portrait";
-  return `${ESKAY_REF}, ${outfit}, scene: ${clean}, ${safety}, detailed anime-styled illustration with photo-reference fidelity (same hair, same mask, same aesthetic), vibrant, high quality`;
+  const mid = outfit ? `${outfit}, scene: ${clean}` : clean;
+  return `${ESKAY_REF}, ${mid}, ${safety}, detailed anime-styled illustration with photo-reference fidelity (same hair, same mask, same aesthetic), vibrant, high quality`;
 }
 function costumeMenu(){
-  const btns = COSTUMES.map((c,i)=>`<button class="chip" onclick="window.genCostume(${i})">👗 ${c.name}</button>`).join('');
-  return `Choisis un costume ref pour la génération 👇 (ou décris le tien après /image)<br><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${btns}</div><div class="media-cap">🎨 ref: tes 7 photos — mask dents + cheveux noirs toujours gardés est grosse poitrine</div>`;
+  window.costumeSel = {bases:[], chest:-1, tenue:0, extras:[], pose:-1, cadrage:-1, mast:0, squirt:0, toy:0};
+  const sec = (title, secName, arr, multi)=>{
+    const btns = arr.map((c,i)=>{
+      const lock = (c.nsfw && mode!=='nsfw') ? ' 🔞' : '';
+      const on = ((secName==='tenue'||secName==='mast'||secName==='squirt'||secName==='toy') && i===0) ? ' on' : '';
+      return `<button class="chip${on}" data-sec="${secName}" data-i="${i}" onclick="window.toggleCostume('${secName}',${i},this)">${esc(c.name)}${lock}</button>`;
+    }).join('');
+    return `<div style="margin-top:8px"><div style="color:var(--dim);font-size:17px">${title}${multi?' (plusieurs possibles)':''}</div><div class="sec-row">${btns}</div></div>`;
+  };
+  return `<div class="costume-builder">Coche <b>plusieurs options</b> puis <b>Valider</b> 👇 — ou décris tout en texte libre via /image`
+    + sec('👗 BASE','bases',COSTUME_BASES,true)
+    + sec('🍈 POITRINE','chest',CHEST_OPTS,false)
+    + sec('👙 TENUE','tenue',TENUE_OPTS,false)
+    + sec('🖼️ CADRAGE','cadrage',CADRAGE_OPTS,false)
+    + sec('✨ EXTRAS','extras',EXTRA_OPTS,true)
+    + sec('📸 POSE','pose',POSE_OPTS,false)
+    + sec('🖐️ ACTION 🔞','mast',MAST_OPTS,false)
+    + sec('💦 ÉJACULATION 🔞','squirt',SQUIRT_OPTS,false)
+    + sec('🧸 AVEC 🔞','toy',TOY_OPTS,false)
+    + `<input id="costumeFreeInput" maxlength="200" placeholder="détail libre ex: sourire, lumière violette, tatouage..." style="width:100%;margin-top:8px;background:#000;border:2px solid #44446a;color:var(--text);font-family:inherit;font-size:18px;padding:8px 10px">`
+    + `<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><button class="chip" onclick="window.resetCostume()">↺ Effacer</button><button class="chip on" onclick="window.validateCostume()">Valider → Générer 🎨</button></div>`
+    + `<div class="media-cap">🎨 vraie génération : tes choix composent le prompt. Mask + cheveux noirs toujours gardés. Nude / action / cadrage précis = NSFW 18+.</div></div>`;
 }
+window.toggleCostume = (secName,i,el)=>{
+  if(!window.costumeSel) window.costumeSel = {bases:[], chest:-1, tenue:0, extras:[], pose:-1, cadrage:-1, mast:0, squirt:0, toy:0};
+  const s = window.costumeSel;
+  if(secName==='bases' || secName==='extras'){
+    const arr = s[secName];
+    const k = arr.indexOf(i);
+    if(k>=0){ arr.splice(k,1); el.classList.remove('on'); }
+    else { arr.push(i); el.classList.add('on'); }
+  } else {
+    if(s[secName]===i){ s[secName]=-1; el.classList.remove('on'); }
+    else { s[secName]=i; const par = el.parentElement; par.querySelectorAll('.chip').forEach(b=>b.classList.remove('on')); el.classList.add('on'); }
+  }
+};
+window.resetCostume = ()=>{
+  window.costumeSel = {bases:[], chest:-1, tenue:0, extras:[], pose:-1, cadrage:-1, mast:0, squirt:0, toy:0};
+  document.querySelectorAll('.costume-builder .chip.on').forEach(b=>b.classList.remove('on'));
+  [["tenue",0],["mast",0],["squirt",0],["toy",0]].forEach(([sec,i])=>{ const b = document.querySelector(`.costume-builder [data-sec="${sec}"][data-i="${i}"]`); if(b) b.classList.add('on'); });
+  const f = document.querySelector('#costumeFreeInput'); if(f) f.value='';
+};
+window.validateCostume = ()=>{
+  const s = window.costumeSel || {bases:[], chest:-1, tenue:0, extras:[], pose:-1, cadrage:-1, mast:0, squirt:0, toy:0};
+  const bases = (s.bases||[]).map(i=>COSTUME_BASES[i] && COSTUME_BASES[i].desc).filter(Boolean);
+  const chest = s.chest>=0 && CHEST_OPTS[s.chest] ? CHEST_OPTS[s.chest].desc : '';
+  const tenue = s.tenue>=0 && TENUE_OPTS[s.tenue] ? TENUE_OPTS[s.tenue].desc : '';
+  const cadrage = s.cadrage>=0 && CADRAGE_OPTS[s.cadrage] ? CADRAGE_OPTS[s.cadrage].desc : '';
+  const extras = (s.extras||[]).map(i=>EXTRA_OPTS[i] && EXTRA_OPTS[i].desc).filter(Boolean);
+  const pose = s.pose>=0 && POSE_OPTS[s.pose] ? POSE_OPTS[s.pose].desc : '';
+  const mast = s.mast>0 && MAST_OPTS[s.mast] ? MAST_OPTS[s.mast].desc : '';
+  const squirt = s.squirt>0 && SQUIRT_OPTS[s.squirt] ? SQUIRT_OPTS[s.squirt].desc : '';
+  const toy = s.toy>0 && TOY_OPTS[s.toy] ? TOY_OPTS[s.toy].desc : '';
+  const free = ((document.querySelector('#costumeFreeInput') || {}).value || '').trim().slice(0,200);
+  const needNSFW = (s.chest>=0 && CHEST_OPTS[s.chest] && CHEST_OPTS[s.chest].nsfw)
+    || (s.tenue>=0 && TENUE_OPTS[s.tenue] && TENUE_OPTS[s.tenue].nsfw)
+    || (s.cadrage>=0 && CADRAGE_OPTS[s.cadrage] && CADRAGE_OPTS[s.cadrage].nsfw)
+    || s.mast>0 || s.squirt>0 || s.toy>0
+    || /nude|nue?|naked|topless|seins|culotte|sans haut|sans bas|masturb|éjacul|ejacul|squirt|jouet|gode/i.test(free);
+  if(needNSFW && mode!=='nsfw'){
+    askAdult(ok=>{ if(ok){ setMode('nsfw'); window.validateCostume(); } else { botSay("cette combinaison est 18+ owO 😅 passe en <b>/nsfw</b> ou choisis une version chill (habillée complète)."); } });
+    return;
+  }
+  const parts = [...bases, chest, tenue, cadrage, ...extras, pose, mast, squirt, toy, free].filter(Boolean);
+  if(!parts.length){ botSay("choisis au moins une option owO (ou écris un détail libre) puis Valider ~"); return; }
+  input.value = '/image ' + parts.join(', ');
+  send();
+};
 window.genCostume = (i)=>{
   const c = COSTUMES[i]; if(!c) return;
   input.value = `/image ${c.desc}`;
@@ -309,6 +442,7 @@ async function aiChat(userText){
   tdiv.innerHTML=`<span class="who">${mode==='nsfw'?'ESSKAYUWU 🔥':'ESSKAYUWU ☁'}<span class="time">${time()}</span></span><span class="txt"><span class="typing"><i></i><i></i><i></i></span> <span class="live"></span></span>`;
   box.appendChild(tdiv); box.scrollTop=box.scrollHeight;
   const live = tdiv.querySelector('.live');
+  const stopTips = attachThinkTips(tdiv);
   try{
     if(!window.root || !window.root.generateText) throw new Error("plugin texte non chargé");
     const res = await window.root.generateText({
@@ -321,9 +455,11 @@ async function aiChat(userText){
     chatHist.push(`Esskayuwu: ${txt.slice(0,400)}`);
     if(chatHist.length>16) chatHist = chatHist.slice(-16);
     tdiv.querySelector('.txt').textContent = txt;
+    stopTips();
   }catch(e){
     const fb = reply(userText);
     tdiv.querySelector('.txt').innerHTML = (fb===null||fb===undefined) ? "petit lag de mon côté owO, redis-moi ?" : fb;
+    stopTips();
   }
   box.scrollTop=box.scrollHeight;
   botBusy=false;
@@ -342,7 +478,8 @@ async function handleGenRequest(rawText){
     return;
   }
   const low = rawText.toLowerCase();
-  if(/^\/(image|costume)( (costume|menu|tenue|idées|idees))?\s*$/.test(low) || /propose.*costume|idée.*tenue|quel costume/.test(low)){
+  // "/costume" seul / avec emoji / menu => builder ; "/costume + longue description" => génération directe
+  if((low.indexOf('/costume')===0 && (low.length<=24 || /menu|tenue|idée|idee|👗/.test(low))) || /propose.*costume|idée.*tenue|quel costume/.test(low)){
     botSay(costumeMenu());
     return;
   }
@@ -352,13 +489,16 @@ async function handleGenRequest(rawText){
   tdiv.className='msg bot';
   tdiv.innerHTML=`<span class="who">${isNSFW?'ESSKAY-CHAN 🔥':'ESSKAY-CHAN ☁'}<span class="time">${time()}</span></span><span class="txt">🎨 génération en cours... <i>“${esc(prompt.slice(0,120))}...”</i><br><span class="typing"><i></i><i></i><i></i></span><br><span style="color:var(--dim);font-size:17px">10-40s, style anime fictif basé sur tes photos ref (cheveux noirs + mask dents + headset + large breasts )</span></span>`;
   box.appendChild(tdiv); box.scrollTop=box.scrollHeight;
+  const stopTips = attachThinkTips(tdiv);
   try{
     if(!window.root || !window.root.generateImage) throw new Error("plugin image non chargé (recharge la page)");
     const res = await window.root.generateImage(prompt, {resolution:"512x768"});
     const url = res && res.dataUrl ? res.dataUrl : null;
     if(!url) throw new Error("pas d'image retournée");
+    stopTips();
     tdiv.querySelector('.txt').innerHTML = `${isNSFW?"🔥 voilà crée 😏":"voilà crée UwU ~"}<br><img class="media-img" src="${url}" alt="esskay-chan generated"><div class="media-cap">🎨 générée à partir du perso ref (mask + cheveux noirs + grose poitrine) • prompt: “${esc(rawText.slice(0,140))}” • fictif, pas la vraie personne</div>`;
   }catch(e){
+    stopTips();
     tdiv.querySelector('.txt').innerHTML = `oups la génération a échoué owO (${esc(String(e.message||e)).slice(0,200)})<br>Réessaie avec /image + une description simple, ex: <b>/image en stream avec casque neko</b>`;
   }
   box.scrollTop=box.scrollHeight;
@@ -378,7 +518,9 @@ function renderChips(){
   const list = mode==='nsfw' ? NSFW_CHIPS : SFW_CHIPS;
   list.forEach(c=>{
     const b=document.createElement('button'); b.className='chip'; b.textContent=c;
-    b.onclick=()=>{ input.value=c; send(); };
+    // le chip affiche "/costume 👗" mais n'envoie que "/costume" pour que ce soit compris
+    const toSend = c.indexOf('/costume')===0 ? '/costume' : c;
+    b.onclick=()=>{ input.value=toSend; send(); };
     chipsBox.appendChild(b);
   });
 }
@@ -441,7 +583,7 @@ function reply(raw){
   }
  
   if(t==='/clear'){ box.innerHTML=''; boot(false); return null; }
-  if(t==='/costume' || t==='/costumes' || t==='/tenue'){
+  if(t.indexOf('/costume')===0 || t==='/costumes' || t.indexOf('/tenue')===0 || t==='costume' || t==='tenue' || t.indexOf('/costume 👗')===0){
     return costumeMenu();
   }
   if(t==='/photo' || t==='photo' || t==='/pic' || t==='/selfie' || t==='une photo ? 📸'){
@@ -535,6 +677,40 @@ function reply(raw){
   ]);
 }
 
+// --- tips affichés pendant que le bot réfléchit / génère (10 par mode) ---
+const THINK_TIPS_SFW = [
+  "💡 /photo → une photo random de l'archive",
+  "💡 /costume → le builder : coche plusieurs options puis Valider",
+  "💡 /image + description → génère une image (ex: /image casque neko)",
+  "💡 /stats → mes stats Twitch détaillées",
+  "💡 /clip → un titre de clip au hasard",
+  "💡 questions précises = meilleures réponses (setup, planning, jeux)",
+  "💡 /clear → efface le chat et on recommence",
+  "💡 /nsfw → mode 18+ 🔥 (avec vérif d'âge)",
+  "💡 demande-moi mon anime du moment 🎌",
+  "💡 le compteur de viewers bouge en live-ish 👁"
+];
+const THINK_TIPS_NSFW = [
+  "🔥 /costume → Nude totale, Haut/Bas uniquement, Poitrine...",
+  "🔥 CADRAGE → corps entier, haut, bas, ou gros plan précis",
+  "🔥 ACTION → masturbation + éjaculation, intensité au choix",
+  "🔥 /video → une vidéo random 🔞",
+  "🔥 'photo nsfw' → une photo coquine random",
+  "🔥 décris tout après /image pour une vraie génération sur mesure",
+  "🔥 précise la pose : close-up, allongée, miroir...",
+  "🔥 dis 'encore' pour un autre random",
+  "🔥 le texte libre du builder accepte 200 caractères",
+  "🔥 /sfw → redescendre en chill ☁"
+];
+function attachThinkTips(tdiv){
+  const div = document.createElement('div');
+  div.className = 'think-tip';
+  const pick = ()=> rnd(mode==='nsfw' ? THINK_TIPS_NSFW : THINK_TIPS_SFW);
+  div.textContent = pick();
+  tdiv.appendChild(div); box.scrollTop = box.scrollHeight;
+  const iv = setInterval(()=>{ div.textContent = pick(); box.scrollTop = box.scrollHeight; }, 2600);
+  return ()=>{ clearInterval(iv); div.remove(); };
+}
 let botBusy=false;
 async function botSay(text){
   botBusy=true;
@@ -542,7 +718,9 @@ async function botSay(text){
   tdiv.className='msg bot';
   tdiv.innerHTML=`<span class="who">${mode==='nsfw'?'ESSKAY-CHAN 🔥':'ESSKAY-CHAN ☁'}<span class="time">${time()}</span></span><span class="txt"><span class="typing"><i></i><i></i><i></i></span></span>`;
   box.appendChild(tdiv); box.scrollTop=box.scrollHeight;
+  const stopTips = attachThinkTips(tdiv);
   await new Promise(r=>setTimeout(r, 600+Math.random()*900+Math.min(1200, text.length*4)));
+  stopTips();
   tdiv.querySelector('.txt').innerHTML=text;
   box.scrollTop=box.scrollHeight;
   botBusy=false;
