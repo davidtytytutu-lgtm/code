@@ -419,7 +419,7 @@ function pickRoot(list, fb){
 
 // ---------- moteur de réponses ----------
 function reply(raw){
-  const t = raw.toLowerCase().trim();
+  let t = raw.toLowerCase().trim();
   const has = (...ws) => ws.some(w=>t.includes(w));
   const N = mode==='nsfw';
 
@@ -479,6 +479,8 @@ function reply(raw){
       askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(nsfwPhotoHTML("validé 18+... 🔞 ")); } else { botSay("on reste sage ~ une <b>/photo</b> normale ? owO"); } });
       return null;
     }
+    return nsfwPhotoHTML("🔞 tiens, juste pour toi, garde ça entre nous owO");
+  }
 
   if(has('photo','selfie','pics','une image','photo de toi','ta photo','montre ta photo','montre-toi','montre toi','voir ta','ton corps','mon corp','ton corp','nouveau vêtement','nouveau vetement','ton bonnet','ta peluche','encore une photo','autre photo','encore 📸')){
     return photoHTML(N ? "ok coquin, rien que pour toi 😏..." : "avec plaisir owO ~");
@@ -488,6 +490,8 @@ function reply(raw){
       askAdult(ok=>{ if(ok){ setMode('nsfw'); botSay(videoHTML("tu as 18+ donc je te montre... 🔥")); } else { botSay("reste en SFW alors ~ je peux t'envoyer une <b>/photo</b> si tu veux owO"); } });
       return null;
     }
+    return videoHTML("mate-moi bien, juste pour toi~");
+  }
 
 
   if(has('quel age','ton age','ton âge','ans','birthday','anniversaire','né le','scorpion','signe')){
@@ -596,5 +600,5 @@ function boot(withHello=true){
   }, 500);
 }
 boot(true);
-  
+})();
 </script>
